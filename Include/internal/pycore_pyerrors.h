@@ -168,11 +168,11 @@ extern TyObject* _TyErr_FormatFromCauseTstate(
     const char *format,
     ...);
 
-extern TyObject* _PyExc_CreateExceptionGroup(
+extern TyObject* _TyExc_CreateExceptionGroup(
     const char *msg,
     TyObject *excs);
 
-extern TyObject* _PyExc_PrepReraiseStar(
+extern TyObject* _TyExc_PrepReraiseStar(
     TyObject *orig,
     TyObject *excs);
 
@@ -195,8 +195,8 @@ Ty_DEPRECATED(3.12) extern void _TyErr_ChainExceptions(TyObject *, TyObject *, T
 
 // implementation detail for the codeop module.
 // Exported for test.test_peg_generator.test_c_parser
-PyAPI_DATA(TyTypeObject) _PyExc_IncompleteInputError;
-#define TyExc_IncompleteInputError ((TyObject *)(&_PyExc_IncompleteInputError))
+PyAPI_DATA(TyTypeObject) _TyExc_IncompleteInputError;
+#define TyExc_IncompleteInputError ((TyObject *)(&_TyExc_IncompleteInputError))
 
 extern int _PyUnicodeError_GetParams(
     TyObject *self,

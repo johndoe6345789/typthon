@@ -30,7 +30,7 @@ extern "C" {
 #include "pycore_tuple.h"         // _TyTuple_HASH_EMPTY
 
 
-extern TyTypeObject _PyExc_MemoryError;
+extern TyTypeObject _TyExc_MemoryError;
 
 
 /* The static initializers defined here should only be used
@@ -166,7 +166,7 @@ extern TyTypeObject _PyExc_MemoryError;
                     .h_root = (PyHamtNode*)&_Ty_SINGLETON(hamt_bitmap_node_empty), \
                 }, \
                 .last_resort_memory_error = { \
-                    _TyObject_HEAD_INIT(&_PyExc_MemoryError), \
+                    _TyObject_HEAD_INIT(&_TyExc_MemoryError), \
                     .args = (TyObject*)&_Ty_SINGLETON(tuple_empty) \
                 }, \
             }, \

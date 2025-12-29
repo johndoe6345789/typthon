@@ -24,7 +24,7 @@ static TyTypeObject _TyExc_InterpreterError = {
     //.tp_clear = ((TyTypeObject *)TyExc_Exception)->tp_clear,
     //.tp_base = (TyTypeObject *)TyExc_Exception,
 };
-TyObject *TyExc_InterpreterError = (TyObject *)&_PyExc_InterpreterError;
+TyObject *TyExc_InterpreterError = (TyObject *)&_TyExc_InterpreterError;
 
 /* InterpreterNotFoundError extends InterpreterError */
 
@@ -35,9 +35,9 @@ static TyTypeObject _TyExc_InterpreterNotFoundError = {
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     //.tp_traverse = ((TyTypeObject *)TyExc_Exception)->tp_traverse,
     //.tp_clear = ((TyTypeObject *)TyExc_Exception)->tp_clear,
-    .tp_base = &_PyExc_InterpreterError,
+    .tp_base = &_TyExc_InterpreterError,
 };
-TyObject *TyExc_InterpreterNotFoundError = (TyObject *)&_PyExc_InterpreterNotFoundError;
+TyObject *TyExc_InterpreterNotFoundError = (TyObject *)&_TyExc_InterpreterNotFoundError;
 
 /* NotShareableError extends TypeError */
 
@@ -141,22 +141,22 @@ init_static_exctypes(exceptions_t *state, TyInterpreterState *interp)
     TyTypeObject *base = (TyTypeObject *)TyExc_Exception;
 
     // TyExc_InterpreterError
-    _PyExc_InterpreterError.tp_base = base;
-    _PyExc_InterpreterError.tp_traverse = base->tp_traverse;
-    _PyExc_InterpreterError.tp_clear = base->tp_clear;
-    if (_PyStaticType_InitBuiltin(interp, &_PyExc_InterpreterError) < 0) {
+    _TyExc_InterpreterError.tp_base = base;
+    _TyExc_InterpreterError.tp_traverse = base->tp_traverse;
+    _TyExc_InterpreterError.tp_clear = base->tp_clear;
+    if (_PyStaticType_InitBuiltin(interp, &_TyExc_InterpreterError) < 0) {
         goto error;
     }
-    state->TyExc_InterpreterError = (TyObject *)&_PyExc_InterpreterError;
+    state->TyExc_InterpreterError = (TyObject *)&_TyExc_InterpreterError;
 
     // TyExc_InterpreterNotFoundError
-    _PyExc_InterpreterNotFoundError.tp_traverse = base->tp_traverse;
-    _PyExc_InterpreterNotFoundError.tp_clear = base->tp_clear;
-    if (_PyStaticType_InitBuiltin(interp, &_PyExc_InterpreterNotFoundError) < 0) {
+    _TyExc_InterpreterNotFoundError.tp_traverse = base->tp_traverse;
+    _TyExc_InterpreterNotFoundError.tp_clear = base->tp_clear;
+    if (_PyStaticType_InitBuiltin(interp, &_TyExc_InterpreterNotFoundError) < 0) {
         goto error;
     }
     state->TyExc_InterpreterNotFoundError =
-            (TyObject *)&_PyExc_InterpreterNotFoundError;
+            (TyObject *)&_TyExc_InterpreterNotFoundError;
 
     return 0;
 
@@ -171,11 +171,11 @@ fini_static_exctypes(exceptions_t *state, TyInterpreterState *interp)
     assert(state == &_PyXI_GET_STATE(interp)->exceptions);
     if (state->TyExc_InterpreterNotFoundError != NULL) {
         state->TyExc_InterpreterNotFoundError = NULL;
-        _PyStaticType_FiniBuiltin(interp, &_PyExc_InterpreterNotFoundError);
+        _PyStaticType_FiniBuiltin(interp, &_TyExc_InterpreterNotFoundError);
     }
     if (state->TyExc_InterpreterError != NULL) {
         state->TyExc_InterpreterError = NULL;
-        _PyStaticType_FiniBuiltin(interp, &_PyExc_InterpreterError);
+        _PyStaticType_FiniBuiltin(interp, &_TyExc_InterpreterError);
     }
 }
 

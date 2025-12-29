@@ -237,7 +237,7 @@ static TyObject *
 prep_reraise_star(TyThreadState* unused, TyObject *orig, TyObject *excs)
 {
     assert(TyList_Check(excs));
-    return _PyExc_PrepReraiseStar(orig, excs);
+    return _TyExc_PrepReraiseStar(orig, excs);
 }
 
 static TyObject *

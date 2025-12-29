@@ -654,7 +654,7 @@ static TyTypeObject _TyExc_BaseException = {
 /* the CPython API expects exceptions to be (TyObject *) - both a hold-over
 from the previous implementation and also allowing Python objects to be used
 in the API */
-TyObject *TyExc_BaseException = (TyObject *)&_PyExc_BaseException;
+TyObject *TyExc_BaseException = (TyObject *)&_TyExc_BaseException;
 
 /* note these macros omit the last semicolon so the macro invocation may
  * include it and not look strange.
@@ -672,26 +672,26 @@ static TyTypeObject _TyExc_ ## EXCNAME = { \
     0, 0, 0, offsetof(TyBaseExceptionObject, dict), \
     BaseException_init, 0, BaseException_new,\
 }; \
-TyObject *TyExc_ ## EXCNAME = (TyObject *)TyExc_ ## EXCNAME = (TyObject *)&_PyExc__TyExc_ ## EXCNAME
+TyObject *TyExc_ ## EXCNAME = (TyObject *)&_TyExc_ ## EXCNAME
 
 #define MiddlingExtendsExceptionEx(EXCBASE, EXCNAME, PYEXCNAME, EXCSTORE, EXCDOC) \
-TyTypeObject _PyExc_ ## EXCNAME = { \
+TyTypeObject _TyExc_ ## EXCNAME = { \
     TyVarObject_HEAD_INIT(NULL, 0) \
     # PYEXCNAME, \
-    sizeof(Py ## EXCSTORE ## Object), \
+    sizeof(Ty ## EXCSTORE ## Object), \
     0, EXCSTORE ## _dealloc, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
     0, 0, 0, 0, 0, \
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC, \
     TyDoc_STR(EXCDOC), EXCSTORE ## _traverse, \
     EXCSTORE ## _clear, 0, 0, 0, 0, 0, 0, 0, &_ ## EXCBASE, \
-    0, 0, 0, offsetof(Py ## EXCSTORE ## Object, dict), \
+    0, 0, 0, offsetof(Ty ## EXCSTORE ## Object, dict), \
     EXCSTORE ## _init, 0, 0, \
 };
 
 #define MiddlingExtendsException(EXCBASE, EXCNAME, EXCSTORE, EXCDOC) \
     static MiddlingExtendsExceptionEx( \
         EXCBASE, EXCNAME, EXCNAME, EXCSTORE, EXCDOC); \
-    TyObject *TyExc_ ## EXCNAME = (TyObject *)TyExc_ ## EXCNAME = (TyObject *)&_PyExc__TyExc_ ## EXCNAME
+    TyObject *TyExc_ ## EXCNAME = (TyObject *)&_TyExc_ ## EXCNAME
 
 #define ComplexExtendsException(EXCBASE, EXCNAME, EXCSTORE, EXCNEW, \
                                 EXCMETHODS, EXCMEMBERS, EXCGETSET, \
@@ -699,17 +699,17 @@ TyTypeObject _PyExc_ ## EXCNAME = { \
 static TyTypeObject _TyExc_ ## EXCNAME = { \
     TyVarObject_HEAD_INIT(NULL, 0) \
     # EXCNAME, \
-    sizeof(Py ## EXCSTORE ## Object), 0, \
+    sizeof(Ty ## EXCSTORE ## Object), 0, \
     EXCSTORE ## _dealloc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
     EXCSTR, 0, 0, 0, \
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC, \
     TyDoc_STR(EXCDOC), EXCSTORE ## _traverse, \
     EXCSTORE ## _clear, 0, 0, 0, 0, EXCMETHODS, \
     EXCMEMBERS, EXCGETSET, &_ ## EXCBASE, \
-    0, 0, 0, offsetof(Py ## EXCSTORE ## Object, dict), \
+    0, 0, 0, offsetof(Ty ## EXCSTORE ## Object, dict), \
     EXCSTORE ## _init, 0, EXCNEW,\
 }; \
-TyObject *TyExc_ ## EXCNAME = (TyObject *)TyExc_ ## EXCNAME = (TyObject *)&_PyExc__TyExc_ ## EXCNAME
+TyObject *TyExc_ ## EXCNAME = (TyObject *)&_TyExc_ ## EXCNAME
 
 
 /*
@@ -996,7 +996,7 @@ error:
 }
 
 TyObject *
-_PyExc_CreateExceptionGroup(const char *msg_str, TyObject *excs)
+_TyExc_CreateExceptionGroup(const char *msg_str, TyObject *excs)
 {
     TyObject *msg = TyUnicode_FromString(msg_str);
     if (!msg) {
@@ -1550,7 +1550,7 @@ is_same_exception_metadata(TyObject *exc1, TyObject *exc2)
    Returns NULL and sets an exception on failure.
 */
 TyObject *
-_PyExc_PrepReraiseStar(TyObject *orig, TyObject *excs)
+_TyExc_PrepReraiseStar(TyObject *orig, TyObject *excs)
 {
     /* orig must be a raised & caught exception, so it has a traceback */
     assert(PyExceptionInstance_Check(orig));
@@ -1626,7 +1626,7 @@ _PyExc_PrepReraiseStar(TyObject *orig, TyObject *excs)
             goto done;
         }
         if (TyList_GET_SIZE(raised_list) > 1) {
-            result = _PyExc_CreateExceptionGroup("", raised_list);
+            result = _TyExc_CreateExceptionGroup("", raised_list);
         }
         else {
             result = Ty_NewRef(TyList_GetItem(raised_list, 0));
@@ -1675,7 +1675,7 @@ PyUnstable_Exc_PrepReraiseStar(TyObject *orig, TyObject *excs)
     }
     Ty_DECREF(tb);
 
-    return _PyExc_PrepReraiseStar(orig, excs);
+    return _TyExc_PrepReraiseStar(orig, excs);
 }
 
 static TyMemberDef BaseExceptionGroup_members[] = {
@@ -3664,10 +3664,10 @@ static TyTypeObject _TyExc_UnicodeEncodeError = {
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Unicode encoding error."), UnicodeError_traverse,
     UnicodeError_clear, 0, 0, 0, 0, 0, UnicodeError_members,
-    0, &_PyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
+    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
     UnicodeEncodeError_init, 0, BaseException_new,
 };
-TyObject *TyExc_UnicodeEncodeError = (TyObject *)&_PyExc_UnicodeEncodeError;
+TyObject *TyExc_UnicodeEncodeError = (TyObject *)&_TyExc_UnicodeEncodeError;
 
 
 /*
@@ -3777,10 +3777,10 @@ static TyTypeObject _TyExc_UnicodeDecodeError = {
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Unicode decoding error."), UnicodeError_traverse,
     UnicodeError_clear, 0, 0, 0, 0, 0, UnicodeError_members,
-    0, &_PyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
+    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
     UnicodeDecodeError_init, 0, BaseException_new,
 };
-TyObject *TyExc_UnicodeDecodeError = (TyObject *)&_PyExc_UnicodeDecodeError;
+TyObject *TyExc_UnicodeDecodeError = (TyObject *)&_TyExc_UnicodeDecodeError;
 
 TyObject *
 PyUnicodeDecodeError_Create(
@@ -3883,10 +3883,10 @@ static TyTypeObject _TyExc_UnicodeTranslateError = {
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Unicode translation error."), UnicodeError_traverse,
     UnicodeError_clear, 0, 0, 0, 0, 0, UnicodeError_members,
-    0, &_PyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
+    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
     UnicodeTranslateError_init, 0, BaseException_new,
 };
-TyObject *TyExc_UnicodeTranslateError = (TyObject *)&_PyExc_UnicodeTranslateError;
+TyObject *TyExc_UnicodeTranslateError = (TyObject *)&_TyExc_UnicodeTranslateError;
 
 TyObject *
 _PyUnicodeTranslateError_Create(
@@ -4010,7 +4010,7 @@ _TyErr_NoMemory(TyThreadState *tstate)
 {
     if (Ty_IS_TYPE(TyExc_MemoryError, NULL)) {
         /* TyErr_NoMemory() has been called before TyExc_MemoryError has been
-           initialized by _PyExc_Init() */
+           initialized by _TyExc_Init() */
         Ty_FatalError("Out of memory and TyExc_MemoryError is not "
                       "initialized yet");
     }
@@ -4082,7 +4082,7 @@ free_preallocated_memerrors(struct _Py_exc_state *state)
 }
 
 
-TyTypeObject _PyExc_MemoryError = {
+TyTypeObject _TyExc_MemoryError = {
     TyVarObject_HEAD_INIT(NULL, 0)
     "MemoryError",
     sizeof(TyBaseExceptionObject),
@@ -4090,11 +4090,11 @@ TyTypeObject _PyExc_MemoryError = {
     0, 0, 0, 0, 0, 0, 0,
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Out of memory."), BaseException_traverse,
-    BaseException_clear, 0, 0, 0, 0, 0, 0, 0, &_PyExc_Exception,
+    BaseException_clear, 0, 0, 0, 0, 0, 0, 0, &_TyExc_Exception,
     0, 0, 0, offsetof(TyBaseExceptionObject, dict),
     BaseException_init, 0, MemoryError_new
 };
-TyObject *TyExc_MemoryError = (TyObject *) &_PyExc_MemoryError;
+TyObject *TyExc_MemoryError = (TyObject *) &_TyExc_MemoryError;
 
 
 /*
@@ -4252,7 +4252,7 @@ struct static_exception {
 };
 
 static struct static_exception static_exceptions[] = {
-#define ITEM(NAME) {&_PyExc_##NAME, #NAME}
+#define ITEM(NAME) {&_TyExc_##NAME, #NAME}
     // Level 1
     ITEM(BaseException),
 
@@ -4318,7 +4318,7 @@ static struct static_exception static_exceptions[] = {
 
     // Level 4: Other subclasses
     ITEM(IndentationError), // base: SyntaxError(Exception)
-    {&_PyExc_IncompleteInputError, "_IncompleteInputError"}, // base: SyntaxError(Exception)
+    {&_TyExc_IncompleteInputError, "_IncompleteInputError"}, // base: SyntaxError(Exception)
     ITEM(IndexError),  // base: LookupError(Exception)
     ITEM(KeyError),  // base: LookupError(Exception)
     ITEM(ModuleNotFoundError), // base: ImportError(Exception)
@@ -4346,7 +4346,7 @@ static struct static_exception static_exceptions[] = {
 
 
 int
-_PyExc_InitTypes(TyInterpreterState *interp)
+_TyExc_InitTypes(TyInterpreterState *interp)
 {
     for (size_t i=0; i < Ty_ARRAY_LENGTH(static_exceptions); i++) {
         TyTypeObject *exc = static_exceptions[i].exc;
@@ -4364,7 +4364,7 @@ _PyExc_InitTypes(TyInterpreterState *interp)
 
 
 static void
-_PyExc_FiniTypes(TyInterpreterState *interp)
+_TyExc_FiniTypes(TyInterpreterState *interp)
 {
     for (Ty_ssize_t i=Ty_ARRAY_LENGTH(static_exceptions) - 1; i >= 0; i--) {
         TyTypeObject *exc = static_exceptions[i].exc;
@@ -4374,7 +4374,7 @@ _PyExc_FiniTypes(TyInterpreterState *interp)
 
 
 TyStatus
-_PyExc_InitGlobalObjects(TyInterpreterState *interp)
+_TyExc_InitGlobalObjects(TyInterpreterState *interp)
 {
     if (preallocate_memerrors() < 0) {
         return _TyStatus_NO_MEMORY();
@@ -4383,7 +4383,7 @@ _PyExc_InitGlobalObjects(TyInterpreterState *interp)
 }
 
 TyStatus
-_PyExc_InitState(TyInterpreterState *interp)
+_TyExc_InitState(TyInterpreterState *interp)
 {
     struct _Py_exc_state *state = &interp->exc_state;
 
@@ -4486,20 +4486,20 @@ _PyBuiltins_AddExceptions(TyObject *bltinmod)
 }
 
 void
-_PyExc_ClearExceptionGroupType(TyInterpreterState *interp)
+_TyExc_ClearExceptionGroupType(TyInterpreterState *interp)
 {
     struct _Py_exc_state *state = &interp->exc_state;
     Ty_CLEAR(state->TyExc_ExceptionGroup);
 }
 
 void
-_PyExc_Fini(TyInterpreterState *interp)
+_TyExc_Fini(TyInterpreterState *interp)
 {
     struct _Py_exc_state *state = &interp->exc_state;
     free_preallocated_memerrors(state);
     Ty_CLEAR(state->errnomap);
 
-    _PyExc_FiniTypes(interp);
+    _TyExc_FiniTypes(interp);
 }
 
 int

@@ -7,7 +7,7 @@
 #include "pycore_codecs.h"        // _PyCodec_Lookup()
 #include "pycore_context.h"       // _TyContext_Init()
 #include "pycore_dict.h"          // _TyDict_Fini()
-#include "pycore_exceptions.h"    // _PyExc_InitTypes()
+#include "pycore_exceptions.h"    // _TyExc_InitTypes()
 #include "pycore_fileutils.h"     // _Ty_ResetForceASCII()
 #include "pycore_floatobject.h"   // _TyFloat_InitTypes()
 #include "pycore_freelist.h"      // _TyObject_ClearFreeLists()
@@ -726,16 +726,16 @@ pycore_init_types(TyInterpreterState *interp)
         return status;
     }
 
-    if (_PyExc_InitTypes(interp) < 0) {
+    if (_TyExc_InitTypes(interp) < 0) {
         return _TyStatus_ERR("failed to initialize an exception type");
     }
 
-    status = _PyExc_InitGlobalObjects(interp);
+    status = _TyExc_InitGlobalObjects(interp);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
-    status = _PyExc_InitState(interp);
+    status = _TyExc_InitState(interp);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -1863,7 +1863,7 @@ finalize_interp_types(TyInterpreterState *interp)
     _TyUnicode_FiniTypes(interp);
     _TySys_FiniTypes(interp);
     _PyXI_FiniTypes(interp);
-    _PyExc_Fini(interp);
+    _TyExc_Fini(interp);
     _TyFloat_FiniType(interp);
     _TyLong_FiniTypes(interp);
     _PyThread_FiniType(interp);
@@ -1904,7 +1904,7 @@ finalize_interp_clear(TyThreadState *tstate)
     int is_main_interp = _Ty_IsMainInterpreter(tstate->interp);
 
     _PyXI_Fini(tstate->interp);
-    _PyExc_ClearExceptionGroupType(tstate->interp);
+    _TyExc_ClearExceptionGroupType(tstate->interp);
     _Ty_clear_generic_types(tstate->interp);
 
     /* Clear interpreter state and all thread states */

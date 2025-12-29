@@ -11,10 +11,10 @@ extern "C" {
 
 /* runtime lifecycle */
 
-extern TyStatus _PyExc_InitState(TyInterpreterState *);
-extern TyStatus _PyExc_InitGlobalObjects(TyInterpreterState *);
-extern int _PyExc_InitTypes(TyInterpreterState *);
-extern void _PyExc_Fini(TyInterpreterState *);
+extern TyStatus _TyExc_InitState(TyInterpreterState *);
+extern TyStatus _TyExc_InitGlobalObjects(TyInterpreterState *);
+extern int _TyExc_InitTypes(TyInterpreterState *);
+extern void _TyExc_Fini(TyInterpreterState *);
 
 
 /* other API */
@@ -31,7 +31,7 @@ struct _Py_exc_state {
     TyObject *TyExc_ExceptionGroup;
 };
 
-extern void _PyExc_ClearExceptionGroupType(TyInterpreterState *);
+extern void _TyExc_ClearExceptionGroupType(TyInterpreterState *);
 
 
 #ifdef __cplusplus

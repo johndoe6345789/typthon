@@ -2164,7 +2164,7 @@ _TyEval_ExceptionGroupMatch(_PyInterpreterFrame *frame, TyObject* exc_value,
             if (excs == NULL) {
                 return -1;
             }
-            TyObject *wrapped = _PyExc_CreateExceptionGroup("", excs);
+            TyObject *wrapped = _TyExc_CreateExceptionGroup("", excs);
             Ty_DECREF(excs);
             if (wrapped == NULL) {
                 return -1;
