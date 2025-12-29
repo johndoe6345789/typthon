@@ -1467,7 +1467,7 @@ _get_interpolation_conversion(Parser *p, Token *debug, ResultTokenWithMetadata *
         expr_ty conversion_expr = (expr_ty) conversion->result;
         assert(conversion_expr->kind == Name_kind);
         Ty_UCS4 first = TyUnicode_READ_CHAR(conversion_expr->v.Name.id, 0);
-        return Py_SAFE_DOWNCAST(first, Ty_UCS4, int);
+        return Ty_SAFE_DOWNCAST(first, Ty_UCS4, int);
     }
     else if (debug && !format) {
         /* If no conversion is specified, use !r for debug expressions */

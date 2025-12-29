@@ -452,7 +452,7 @@ TyDoc_STRVAR(SSLEOFError_doc,
 static TyObject *
 SSLError_str(TyObject *op)
 {
-    PyOSErrorObject *self = (PyOSErrorObject*)op;
+    TyOSErrorObject *self = (TyOSErrorObject*)op;
     if (self->strerror != NULL && TyUnicode_Check(self->strerror)) {
         return Ty_NewRef(self->strerror);
     }
@@ -468,7 +468,7 @@ static TyType_Slot sslerror_type_slots[] = {
 
 static TyType_Spec sslerror_type_spec = {
     .name = "ssl.SSLError",
-    .basicsize = sizeof(PyOSErrorObject),
+    .basicsize = sizeof(TyOSErrorObject),
     .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = sslerror_type_slots
 };
@@ -916,7 +916,7 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
 #endif
     SSL_set_app_data(self->ssl, self);
     if (sock) {
-        SSL_set_fd(self->ssl, Py_SAFE_DOWNCAST(sock->sock_fd, SOCKET_T, int));
+        SSL_set_fd(self->ssl, Ty_SAFE_DOWNCAST(sock->sock_fd, SOCKET_T, int));
     } else {
         /* BIOs are reference counted and SSL_set_bio borrows our reference.
          * To prevent a double free in memory_bio_dealloc() we need to take an
@@ -2429,7 +2429,7 @@ PySSL_select(PySocketSockObject *s, int writing, TyTime_t timeout)
 
     /* Wait until the socket becomes ready */
     PySSL_BEGIN_ALLOW_THREADS
-    nfds = Py_SAFE_DOWNCAST(s->sock_fd+1, SOCKET_T, int);
+    nfds = Ty_SAFE_DOWNCAST(s->sock_fd+1, SOCKET_T, int);
     if (writing)
         rc = select(nfds, NULL, &fds, NULL, &tv);
     else

@@ -294,7 +294,7 @@ _TyLong_FromLarge(stwodigits ival)
         _TyLong_SetSignAndDigitCount(v, sign, ndigits);
         t = abs_ival;
         while (t) {
-            *p++ = Py_SAFE_DOWNCAST(
+            *p++ = Ty_SAFE_DOWNCAST(
                 t & TyLong_MASK, twodigits, digit);
             t >>= TyLong_SHIFT;
         }
@@ -1218,7 +1218,7 @@ TyLong_AsNativeBytes(TyObject* vv, void* buffer, Ty_ssize_t n, int flags)
     if (TyLong_Check(vv)) {
         v = (PyLongObject *)vv;
     }
-    else if (flags != -1 && (flags & Py_ASNATIVEBYTES_ALLOW_INDEX)) {
+    else if (flags != -1 && (flags & Ty_ASNATIVEBYTES_ALLOW_INDEX)) {
         v = (PyLongObject *)_PyNumber_Index(vv);
         if (v == NULL) {
             return -1;
@@ -1230,7 +1230,7 @@ TyLong_AsNativeBytes(TyObject* vv, void* buffer, Ty_ssize_t n, int flags)
         return -1;
     }
 
-    if ((flags != -1 && (flags & Py_ASNATIVEBYTES_REJECT_NEGATIVE))
+    if ((flags != -1 && (flags & Ty_ASNATIVEBYTES_REJECT_NEGATIVE))
         && _TyLong_IsNegative(v)) {
         TyErr_SetString(TyExc_ValueError, "Cannot convert negative int");
         if (do_decref) {
@@ -1277,7 +1277,7 @@ TyLong_AsNativeBytes(TyObject* vv, void* buffer, Ty_ssize_t n, int flags)
                 /* Positive values with the MSB set do not require an
                  * additional bit when the caller's intent is to treat them
                  * as unsigned. */
-                if (flags == -1 || (flags & Py_ASNATIVEBYTES_UNSIGNED_BUFFER)) {
+                if (flags == -1 || (flags & Ty_ASNATIVEBYTES_UNSIGNED_BUFFER)) {
                     res = n;
                 } else {
                     res = n + 1;
@@ -1361,7 +1361,7 @@ TyLong_AsNativeBytes(TyObject* vv, void* buffer, Ty_ssize_t n, int flags)
                  * as unsigned. */
                 unsigned char *b = (unsigned char *)buffer;
                 if (b[little_endian ? n - 1 : 0] & 0x80) {
-                    if (flags == -1 || (flags & Py_ASNATIVEBYTES_UNSIGNED_BUFFER)) {
+                    if (flags == -1 || (flags & Ty_ASNATIVEBYTES_UNSIGNED_BUFFER)) {
                         res = n;
                     } else {
                         res = n + 1;
@@ -1396,7 +1396,7 @@ TyLong_FromNativeBytes(const void* buffer, size_t n, int flags)
         (const unsigned char *)buffer,
         n,
         little_endian,
-        (flags == -1 || !(flags & Py_ASNATIVEBYTES_UNSIGNED_BUFFER)) ? 1 : 0
+        (flags == -1 || !(flags & Ty_ASNATIVEBYTES_UNSIGNED_BUFFER)) ? 1 : 0
     );
 }
 
@@ -1733,10 +1733,10 @@ int                                                                 \
 _TyLong_##NAME##_Converter(TyObject *obj, void *ptr)                \
 {                                                                   \
     Ty_ssize_t bytes = TyLong_AsNativeBytes(obj, ptr, sizeof(TYPE), \
-            Py_ASNATIVEBYTES_NATIVE_ENDIAN |                        \
-            Py_ASNATIVEBYTES_ALLOW_INDEX |                          \
-            Py_ASNATIVEBYTES_REJECT_NEGATIVE |                      \
-            Py_ASNATIVEBYTES_UNSIGNED_BUFFER);                      \
+            Ty_ASNATIVEBYTES_NATIVE_ENDIAN |                        \
+            Ty_ASNATIVEBYTES_ALLOW_INDEX |                          \
+            Ty_ASNATIVEBYTES_REJECT_NEGATIVE |                      \
+            Ty_ASNATIVEBYTES_UNSIGNED_BUFFER);                      \
     if (bytes < 0) {                                                \
         return 0;                                                   \
     }                                                               \
@@ -6698,8 +6698,8 @@ TyObject* TyLong_FromUInt64(uint64_t value)
 
 #define LONG_TO_INT(obj, value, type_name) \
     do { \
-        int flags = (Py_ASNATIVEBYTES_NATIVE_ENDIAN \
-                     | Py_ASNATIVEBYTES_ALLOW_INDEX); \
+        int flags = (Ty_ASNATIVEBYTES_NATIVE_ENDIAN \
+                     | Ty_ASNATIVEBYTES_ALLOW_INDEX); \
         Ty_ssize_t bytes = TyLong_AsNativeBytes(obj, value, sizeof(*value), flags); \
         if (bytes < 0) { \
             return -1; \
@@ -6724,10 +6724,10 @@ int TyLong_AsInt64(TyObject *obj, int64_t *value)
 
 #define LONG_TO_UINT(obj, value, type_name) \
     do { \
-        int flags = (Py_ASNATIVEBYTES_NATIVE_ENDIAN \
-                     | Py_ASNATIVEBYTES_UNSIGNED_BUFFER \
-                     | Py_ASNATIVEBYTES_REJECT_NEGATIVE \
-                     | Py_ASNATIVEBYTES_ALLOW_INDEX); \
+        int flags = (Ty_ASNATIVEBYTES_NATIVE_ENDIAN \
+                     | Ty_ASNATIVEBYTES_UNSIGNED_BUFFER \
+                     | Ty_ASNATIVEBYTES_REJECT_NEGATIVE \
+                     | Ty_ASNATIVEBYTES_ALLOW_INDEX); \
         Ty_ssize_t bytes = TyLong_AsNativeBytes(obj, value, sizeof(*value), flags); \
         if (bytes < 0) { \
             return -1; \

@@ -1268,7 +1268,7 @@ _TyObject_SetAttributeErrorContext(TyObject* v, TyObject* name)
     if (!TyErr_GivenExceptionMatches(exc, TyExc_AttributeError)) {
         goto restore;
     }
-    PyAttributeErrorObject* the_exc = (PyAttributeErrorObject*) exc;
+    TyAttributeErrorObject* the_exc = (TyAttributeErrorObject*) exc;
     // Check if this exception was already augmented
     if (the_exc->name || the_exc->obj) {
         goto restore;

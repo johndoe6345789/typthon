@@ -614,10 +614,10 @@ static int                                                          \
 _TyLong_##NAME##_Converter(TyObject *obj, void *ptr)                \
 {                                                                   \
     Ty_ssize_t bytes = TyLong_AsNativeBytes(obj, ptr, sizeof(TYPE), \
-            Py_ASNATIVEBYTES_NATIVE_ENDIAN |                        \
-            Py_ASNATIVEBYTES_ALLOW_INDEX |                          \
-            Py_ASNATIVEBYTES_REJECT_NEGATIVE |                      \
-            Py_ASNATIVEBYTES_UNSIGNED_BUFFER);                      \
+            Ty_ASNATIVEBYTES_NATIVE_ENDIAN |                        \
+            Ty_ASNATIVEBYTES_ALLOW_INDEX |                          \
+            Ty_ASNATIVEBYTES_REJECT_NEGATIVE |                      \
+            Ty_ASNATIVEBYTES_UNSIGNED_BUFFER);                      \
     if (bytes < 0) {                                                \
         return 0;                                                   \
     }                                                               \
@@ -921,10 +921,10 @@ internal_select(PySocketSockObject *s, int writing, TyTime_t interval,
     /* See if the socket is ready */
     Ty_BEGIN_ALLOW_THREADS;
     if (writing)
-        n = select(Py_SAFE_DOWNCAST(get_sock_fd(s)+1, SOCKET_T, int),
+        n = select(Ty_SAFE_DOWNCAST(get_sock_fd(s)+1, SOCKET_T, int),
                    NULL, &fds, &efds, tvp);
     else
-        n = select(Py_SAFE_DOWNCAST(get_sock_fd(s)+1, SOCKET_T, int),
+        n = select(Ty_SAFE_DOWNCAST(get_sock_fd(s)+1, SOCKET_T, int),
                    &fds, NULL, &efds, tvp);
     Ty_END_ALLOW_THREADS;
 #endif

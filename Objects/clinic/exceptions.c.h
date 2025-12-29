@@ -318,7 +318,7 @@ TyDoc_STRVAR(BaseExceptionGroup_derive__doc__,
     {"derive", (PyCFunction)BaseExceptionGroup_derive, METH_O, BaseExceptionGroup_derive__doc__},
 
 static TyObject *
-BaseExceptionGroup_derive_impl(PyBaseExceptionGroupObject *self,
+BaseExceptionGroup_derive_impl(TyBaseExceptionGroupObject *self,
                                TyObject *excs);
 
 static TyObject *
@@ -327,7 +327,7 @@ BaseExceptionGroup_derive(TyObject *self, TyObject *excs)
     TyObject *return_value = NULL;
 
     Ty_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseExceptionGroup_derive_impl((PyBaseExceptionGroupObject *)self, excs);
+    return_value = BaseExceptionGroup_derive_impl((TyBaseExceptionGroupObject *)self, excs);
     Ty_END_CRITICAL_SECTION();
 
     return return_value;
@@ -342,7 +342,7 @@ TyDoc_STRVAR(BaseExceptionGroup_split__doc__,
     {"split", (PyCFunction)BaseExceptionGroup_split, METH_O, BaseExceptionGroup_split__doc__},
 
 static TyObject *
-BaseExceptionGroup_split_impl(PyBaseExceptionGroupObject *self,
+BaseExceptionGroup_split_impl(TyBaseExceptionGroupObject *self,
                               TyObject *matcher_value);
 
 static TyObject *
@@ -351,7 +351,7 @@ BaseExceptionGroup_split(TyObject *self, TyObject *matcher_value)
     TyObject *return_value = NULL;
 
     Ty_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseExceptionGroup_split_impl((PyBaseExceptionGroupObject *)self, matcher_value);
+    return_value = BaseExceptionGroup_split_impl((TyBaseExceptionGroupObject *)self, matcher_value);
     Ty_END_CRITICAL_SECTION();
 
     return return_value;
@@ -366,7 +366,7 @@ TyDoc_STRVAR(BaseExceptionGroup_subgroup__doc__,
     {"subgroup", (PyCFunction)BaseExceptionGroup_subgroup, METH_O, BaseExceptionGroup_subgroup__doc__},
 
 static TyObject *
-BaseExceptionGroup_subgroup_impl(PyBaseExceptionGroupObject *self,
+BaseExceptionGroup_subgroup_impl(TyBaseExceptionGroupObject *self,
                                  TyObject *matcher_value);
 
 static TyObject *
@@ -375,7 +375,7 @@ BaseExceptionGroup_subgroup(TyObject *self, TyObject *matcher_value)
     TyObject *return_value = NULL;
 
     Ty_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseExceptionGroup_subgroup_impl((PyBaseExceptionGroupObject *)self, matcher_value);
+    return_value = BaseExceptionGroup_subgroup_impl((TyBaseExceptionGroupObject *)self, matcher_value);
     Ty_END_CRITICAL_SECTION();
 
     return return_value;

@@ -1465,7 +1465,7 @@ dummy_func(
 
             int matches = TyErr_GivenExceptionMatches(exc_value, TyExc_StopIteration);
             if (matches) {
-                value = PyStackRef_FromPyObjectNew(((PyStopIterationObject *)exc_value)->value);
+                value = PyStackRef_FromPyObjectNew(((TyStopIterationObject *)exc_value)->value);
                 DECREF_INPUTS();
                 none = PyStackRef_None;
             }

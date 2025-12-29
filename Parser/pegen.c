@@ -936,7 +936,7 @@ _TyPegen_set_syntax_error_metadata(Parser *p) {
         TyErr_Clear();
         return;
     }
-    PySyntaxErrorObject *syntax_error = (PySyntaxErrorObject *)exc;
+    TySyntaxErrorObject *syntax_error = (TySyntaxErrorObject *)exc;
 
     Ty_XDECREF(syntax_error->metadata);
     syntax_error->metadata = metadata;

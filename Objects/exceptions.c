@@ -21,7 +21,7 @@
 
 /*[clinic input]
 class BaseException "TyBaseExceptionObject *" "&TyExc_BaseException"
-class BaseExceptionGroup "PyBaseExceptionGroupObject *" "&TyExc_BaseExceptionGroup"
+class BaseExceptionGroup "TyBaseExceptionGroupObject *" "&TyExc_BaseExceptionGroup"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=b7c45e78cff8edc3]*/
 
@@ -738,16 +738,16 @@ SimpleExtendsException(TyExc_Exception, StopAsyncIteration,
  */
 
 static TyMemberDef StopIteration_members[] = {
-    {"value", _Ty_T_OBJECT, offsetof(PyStopIterationObject, value), 0,
+    {"value", _Ty_T_OBJECT, offsetof(TyStopIterationObject, value), 0,
         TyDoc_STR("generator return value")},
     {NULL}  /* Sentinel */
 };
 
-static inline PyStopIterationObject *
+static inline TyStopIterationObject *
 PyStopIterationObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_StopIteration));
-    return (PyStopIterationObject *)self;
+    return (TyStopIterationObject *)self;
 }
 
 static int
@@ -758,7 +758,7 @@ StopIteration_init(TyObject *op, TyObject *args, TyObject *kwds)
 
     if (BaseException_init(op, args, kwds) == -1)
         return -1;
-    PyStopIterationObject *self = PyStopIterationObject_CAST(op);
+    TyStopIterationObject *self = PyStopIterationObject_CAST(op);
     Ty_CLEAR(self->value);
     if (size > 0)
         value = TyTuple_GET_ITEM(args, 0);
@@ -771,7 +771,7 @@ StopIteration_init(TyObject *op, TyObject *args, TyObject *kwds)
 static int
 StopIteration_clear(TyObject *op)
 {
-    PyStopIterationObject *self = PyStopIterationObject_CAST(op);
+    TyStopIterationObject *self = PyStopIterationObject_CAST(op);
     Ty_CLEAR(self->value);
     return BaseException_clear(op);
 }
@@ -787,7 +787,7 @@ StopIteration_dealloc(TyObject *self)
 static int
 StopIteration_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PyStopIterationObject *self = PyStopIterationObject_CAST(op);
+    TyStopIterationObject *self = PyStopIterationObject_CAST(op);
     Ty_VISIT(self->value);
     return BaseException_traverse(op, visit, arg);
 }
@@ -808,11 +808,11 @@ SimpleExtendsException(TyExc_BaseException, GeneratorExit,
  *    SystemExit extends BaseException
  */
 
-static inline PySystemExitObject *
+static inline TySystemExitObject *
 PySystemExitObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_SystemExit));
-    return (PySystemExitObject *)self;
+    return (TySystemExitObject *)self;
 }
 
 static int
@@ -823,7 +823,7 @@ SystemExit_init(TyObject *op, TyObject *args, TyObject *kwds)
     if (BaseException_init(op, args, kwds) == -1)
         return -1;
 
-    PySystemExitObject *self = PySystemExitObject_CAST(op);
+    TySystemExitObject *self = PySystemExitObject_CAST(op);
     if (size == 0)
         return 0;
     if (size == 1) {
@@ -838,7 +838,7 @@ SystemExit_init(TyObject *op, TyObject *args, TyObject *kwds)
 static int
 SystemExit_clear(TyObject *op)
 {
-    PySystemExitObject *self = PySystemExitObject_CAST(op);
+    TySystemExitObject *self = PySystemExitObject_CAST(op);
     Ty_CLEAR(self->code);
     return BaseException_clear(op);
 }
@@ -854,13 +854,13 @@ SystemExit_dealloc(TyObject *self)
 static int
 SystemExit_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PySystemExitObject *self = PySystemExitObject_CAST(op);
+    TySystemExitObject *self = PySystemExitObject_CAST(op);
     Ty_VISIT(self->code);
     return BaseException_traverse(op, visit, arg);
 }
 
 static TyMemberDef SystemExit_members[] = {
-    {"code", _Ty_T_OBJECT, offsetof(PySystemExitObject, code), 0,
+    {"code", _Ty_T_OBJECT, offsetof(TySystemExitObject, code), 0,
         TyDoc_STR("exception code")},
     {NULL}  /* Sentinel */
 };
@@ -875,11 +875,11 @@ ComplexExtendsException(TyExc_BaseException, SystemExit, SystemExit,
  */
 
 
-static inline PyBaseExceptionGroupObject*
+static inline TyBaseExceptionGroupObject*
 PyBaseExceptionGroupObject_CAST(TyObject *exc)
 {
     assert(_PyBaseExceptionGroup_Check(exc));
-    return (PyBaseExceptionGroupObject *)exc;
+    return (TyBaseExceptionGroupObject *)exc;
 }
 
 static TyObject *
@@ -981,7 +981,7 @@ BaseExceptionGroup_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
          */
         cls = (TyTypeObject*)TyExc_BaseExceptionGroup;
     }
-    PyBaseExceptionGroupObject *self =
+    TyBaseExceptionGroupObject *self =
         PyBaseExceptionGroupObject_CAST(BaseException_new(cls, args, kwds));
     if (!self) {
         goto error;
@@ -1027,7 +1027,7 @@ BaseExceptionGroup_init(TyObject *self, TyObject *args, TyObject *kwds)
 static int
 BaseExceptionGroup_clear(TyObject *op)
 {
-    PyBaseExceptionGroupObject *self = PyBaseExceptionGroupObject_CAST(op);
+    TyBaseExceptionGroupObject *self = PyBaseExceptionGroupObject_CAST(op);
     Ty_CLEAR(self->msg);
     Ty_CLEAR(self->excs);
     return BaseException_clear(op);
@@ -1044,7 +1044,7 @@ BaseExceptionGroup_dealloc(TyObject *self)
 static int
 BaseExceptionGroup_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PyBaseExceptionGroupObject *self = PyBaseExceptionGroupObject_CAST(op);
+    TyBaseExceptionGroupObject *self = PyBaseExceptionGroupObject_CAST(op);
     Ty_VISIT(self->msg);
     Ty_VISIT(self->excs);
     return BaseException_traverse(op, visit, arg);
@@ -1053,7 +1053,7 @@ BaseExceptionGroup_traverse(TyObject *op, visitproc visit, void *arg)
 static TyObject *
 BaseExceptionGroup_str(TyObject *op)
 {
-    PyBaseExceptionGroupObject *self = PyBaseExceptionGroupObject_CAST(op);
+    TyBaseExceptionGroupObject *self = PyBaseExceptionGroupObject_CAST(op);
     assert(self->msg);
     assert(TyUnicode_Check(self->msg));
 
@@ -1072,7 +1072,7 @@ BaseExceptionGroup.derive
 [clinic start generated code]*/
 
 static TyObject *
-BaseExceptionGroup_derive_impl(PyBaseExceptionGroupObject *self,
+BaseExceptionGroup_derive_impl(TyBaseExceptionGroupObject *self,
                                TyObject *excs)
 /*[clinic end generated code: output=4307564218dfbf06 input=f72009d38e98cec1]*/
 {
@@ -1088,7 +1088,7 @@ BaseExceptionGroup_derive_impl(PyBaseExceptionGroupObject *self,
 
 static int
 exceptiongroup_subset(
-    PyBaseExceptionGroupObject *_orig, TyObject *excs, TyObject **result)
+    TyBaseExceptionGroupObject *_orig, TyObject *excs, TyObject **result)
 {
     /* Sets *result to an ExceptionGroup wrapping excs with metadata from
      * _orig. If excs is empty, sets *result to NULL.
@@ -1288,7 +1288,7 @@ exceptiongroup_split_recursive(TyObject *exc,
 
     /* Partial match */
 
-    PyBaseExceptionGroupObject *eg = PyBaseExceptionGroupObject_CAST(exc);
+    TyBaseExceptionGroupObject *eg = PyBaseExceptionGroupObject_CAST(exc);
     assert(TyTuple_CheckExact(eg->excs));
     Ty_ssize_t num_excs = TyTuple_Size(eg->excs);
     if (num_excs < 0) {
@@ -1376,7 +1376,7 @@ BaseExceptionGroup.split
 [clinic start generated code]*/
 
 static TyObject *
-BaseExceptionGroup_split_impl(PyBaseExceptionGroupObject *self,
+BaseExceptionGroup_split_impl(TyBaseExceptionGroupObject *self,
                               TyObject *matcher_value)
 /*[clinic end generated code: output=d74db579da4df6e2 input=0c5cfbfed57e0052]*/
 {
@@ -1411,7 +1411,7 @@ BaseExceptionGroup.subgroup
 [clinic start generated code]*/
 
 static TyObject *
-BaseExceptionGroup_subgroup_impl(PyBaseExceptionGroupObject *self,
+BaseExceptionGroup_subgroup_impl(TyBaseExceptionGroupObject *self,
                                  TyObject *matcher_value)
 /*[clinic end generated code: output=07dbec8f77d4dd8e input=988ffdd755a151ce]*/
 {
@@ -1457,7 +1457,7 @@ collect_exception_group_leaf_ids(TyObject *exc, TyObject *leaf_ids)
         Ty_DECREF(exc_id);
         return res;
     }
-    PyBaseExceptionGroupObject *eg = PyBaseExceptionGroupObject_CAST(exc);
+    TyBaseExceptionGroupObject *eg = PyBaseExceptionGroupObject_CAST(exc);
     Ty_ssize_t num_excs = TyTuple_GET_SIZE(eg->excs);
     /* recursive calls */
     for (Ty_ssize_t i = 0; i < num_excs; i++) {
@@ -1679,9 +1679,9 @@ PyUnstable_Exc_PrepReraiseStar(TyObject *orig, TyObject *excs)
 }
 
 static TyMemberDef BaseExceptionGroup_members[] = {
-    {"message", _Ty_T_OBJECT, offsetof(PyBaseExceptionGroupObject, msg), Py_READONLY,
+    {"message", _Ty_T_OBJECT, offsetof(TyBaseExceptionGroupObject, msg), Py_READONLY,
         TyDoc_STR("exception message")},
-    {"exceptions", _Ty_T_OBJECT, offsetof(PyBaseExceptionGroupObject, excs), Py_READONLY,
+    {"exceptions", _Ty_T_OBJECT, offsetof(TyBaseExceptionGroupObject, excs), Py_READONLY,
         TyDoc_STR("nested exceptions")},
     {NULL}  /* Sentinel */
 };
@@ -1733,11 +1733,11 @@ SimpleExtendsException(TyExc_BaseException, KeyboardInterrupt,
  *    ImportError extends Exception
  */
 
-static inline PyImportErrorObject *
+static inline TyImportErrorObject *
 PyImportErrorObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_ImportError));
-    return (PyImportErrorObject *)self;
+    return (TyImportErrorObject *)self;
 }
 
 static int
@@ -1753,7 +1753,7 @@ ImportError_init(TyObject *op, TyObject *args, TyObject *kwds)
     if (BaseException_init(op, args, NULL) == -1)
         return -1;
 
-    PyImportErrorObject *self = PyImportErrorObject_CAST(op);
+    TyImportErrorObject *self = PyImportErrorObject_CAST(op);
     empty_tuple = TyTuple_New(0);
     if (!empty_tuple)
         return -1;
@@ -1779,7 +1779,7 @@ ImportError_init(TyObject *op, TyObject *args, TyObject *kwds)
 static int
 ImportError_clear(TyObject *op)
 {
-    PyImportErrorObject *self = PyImportErrorObject_CAST(op);
+    TyImportErrorObject *self = PyImportErrorObject_CAST(op);
     Ty_CLEAR(self->msg);
     Ty_CLEAR(self->name);
     Ty_CLEAR(self->path);
@@ -1798,7 +1798,7 @@ ImportError_dealloc(TyObject *self)
 static int
 ImportError_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PyImportErrorObject *self = PyImportErrorObject_CAST(op);
+    TyImportErrorObject *self = PyImportErrorObject_CAST(op);
     Ty_VISIT(self->msg);
     Ty_VISIT(self->name);
     Ty_VISIT(self->path);
@@ -1809,7 +1809,7 @@ ImportError_traverse(TyObject *op, visitproc visit, void *arg)
 static TyObject *
 ImportError_str(TyObject *op)
 {
-    PyImportErrorObject *self = PyImportErrorObject_CAST(op);
+    TyImportErrorObject *self = PyImportErrorObject_CAST(op);
     if (self->msg && TyUnicode_CheckExact(self->msg)) {
         return Ty_NewRef(self->msg);
     }
@@ -1819,7 +1819,7 @@ ImportError_str(TyObject *op)
 static TyObject *
 ImportError_getstate(TyObject *op)
 {
-    PyImportErrorObject *self = PyImportErrorObject_CAST(op);
+    TyImportErrorObject *self = PyImportErrorObject_CAST(op);
     TyObject *dict = self->dict;
     if (self->name || self->path || self->name_from) {
         dict = dict ? TyDict_Copy(dict) : TyDict_New();
@@ -1865,13 +1865,13 @@ ImportError_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 }
 
 static TyMemberDef ImportError_members[] = {
-    {"msg", _Ty_T_OBJECT, offsetof(PyImportErrorObject, msg), 0,
+    {"msg", _Ty_T_OBJECT, offsetof(TyImportErrorObject, msg), 0,
         TyDoc_STR("exception message")},
-    {"name", _Ty_T_OBJECT, offsetof(PyImportErrorObject, name), 0,
+    {"name", _Ty_T_OBJECT, offsetof(TyImportErrorObject, name), 0,
         TyDoc_STR("module name")},
-    {"path", _Ty_T_OBJECT, offsetof(PyImportErrorObject, path), 0,
+    {"path", _Ty_T_OBJECT, offsetof(TyImportErrorObject, path), 0,
         TyDoc_STR("module path")},
-    {"name_from", _Ty_T_OBJECT, offsetof(PyImportErrorObject, name_from), 0,
+    {"name_from", _Ty_T_OBJECT, offsetof(TyImportErrorObject, name_from), 0,
         TyDoc_STR("name imported from module")},
     {NULL}  /* Sentinel */
 };
@@ -1899,11 +1899,11 @@ MiddlingExtendsException(TyExc_ImportError, ModuleNotFoundError, ImportError,
  *    OSError extends Exception
  */
 
-static inline PyOSErrorObject *
+static inline TyOSErrorObject *
 PyOSErrorObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_OSError));
-    return (PyOSErrorObject *)self;
+    return (TyOSErrorObject *)self;
 }
 
 #ifdef MS_WINDOWS
@@ -1985,7 +1985,7 @@ oserror_parse_args(TyObject **p_args,
 }
 
 static int
-oserror_init(PyOSErrorObject *self, TyObject **p_args,
+oserror_init(TyOSErrorObject *self, TyObject **p_args,
              TyObject *myerrno, TyObject *strerror,
              TyObject *filename, TyObject *filename2
 #ifdef MS_WINDOWS
@@ -2067,7 +2067,7 @@ oserror_use_init(TyTypeObject *type)
 static TyObject *
 OSError_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    PyOSErrorObject *self = NULL;
+    TyOSErrorObject *self = NULL;
     TyObject *myerrno = NULL, *strerror = NULL;
     TyObject *filename = NULL, *filename2 = NULL;
 #ifdef MS_WINDOWS
@@ -2101,7 +2101,7 @@ OSError_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
         }
     }
 
-    self = (PyOSErrorObject *) type->tp_alloc(type, 0);
+    self = (TyOSErrorObject *) type->tp_alloc(type, 0);
     if (!self)
         goto error;
 
@@ -2135,7 +2135,7 @@ error:
 static int
 OSError_init(TyObject *op, TyObject *args, TyObject *kwds)
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
     TyObject *myerrno = NULL, *strerror = NULL;
     TyObject *filename = NULL, *filename2 = NULL;
 #ifdef MS_WINDOWS
@@ -2174,7 +2174,7 @@ error:
 static int
 OSError_clear(TyObject *op)
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
     Ty_CLEAR(self->myerrno);
     Ty_CLEAR(self->strerror);
     Ty_CLEAR(self->filename);
@@ -2196,7 +2196,7 @@ OSError_dealloc(TyObject *self)
 static int
 OSError_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
     Ty_VISIT(self->myerrno);
     Ty_VISIT(self->strerror);
     Ty_VISIT(self->filename);
@@ -2210,7 +2210,7 @@ OSError_traverse(TyObject *op, visitproc visit, void *arg)
 static TyObject *
 OSError_str(TyObject *op)
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
 #define OR_NONE(x) ((x)?(x):Ty_None)
 #ifdef MS_WINDOWS
     /* If available, winerror has the priority over myerrno */
@@ -2256,7 +2256,7 @@ OSError_str(TyObject *op)
 static TyObject *
 OSError_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
     TyObject *args = self->args;
     TyObject *res = NULL;
 
@@ -2297,7 +2297,7 @@ OSError_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 static TyObject *
 OSError_written_get(TyObject *op, void *context)
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
     if (self->written == -1) {
         TyErr_SetString(TyExc_AttributeError, "characters_written");
         return NULL;
@@ -2308,7 +2308,7 @@ OSError_written_get(TyObject *op, void *context)
 static int
 OSError_written_set(TyObject *op, TyObject *arg, void *context)
 {
-    PyOSErrorObject *self = PyOSErrorObject_CAST(op);
+    TyOSErrorObject *self = PyOSErrorObject_CAST(op);
     if (arg == NULL) {
         if (self->written == -1) {
             TyErr_SetString(TyExc_AttributeError, "characters_written");
@@ -2326,16 +2326,16 @@ OSError_written_set(TyObject *op, TyObject *arg, void *context)
 }
 
 static TyMemberDef OSError_members[] = {
-    {"errno", _Ty_T_OBJECT, offsetof(PyOSErrorObject, myerrno), 0,
+    {"errno", _Ty_T_OBJECT, offsetof(TyOSErrorObject, myerrno), 0,
         TyDoc_STR("POSIX exception code")},
-    {"strerror", _Ty_T_OBJECT, offsetof(PyOSErrorObject, strerror), 0,
+    {"strerror", _Ty_T_OBJECT, offsetof(TyOSErrorObject, strerror), 0,
         TyDoc_STR("exception strerror")},
-    {"filename", _Ty_T_OBJECT, offsetof(PyOSErrorObject, filename), 0,
+    {"filename", _Ty_T_OBJECT, offsetof(TyOSErrorObject, filename), 0,
         TyDoc_STR("exception filename")},
-    {"filename2", _Ty_T_OBJECT, offsetof(PyOSErrorObject, filename2), 0,
+    {"filename2", _Ty_T_OBJECT, offsetof(TyOSErrorObject, filename2), 0,
         TyDoc_STR("second exception filename")},
 #ifdef MS_WINDOWS
-    {"winerror", _Ty_T_OBJECT, offsetof(PyOSErrorObject, winerror), 0,
+    {"winerror", _Ty_T_OBJECT, offsetof(TyOSErrorObject, winerror), 0,
         TyDoc_STR("Win32 exception code")},
 #endif
     {NULL}  /* Sentinel */
@@ -2427,11 +2427,11 @@ SimpleExtendsException(TyExc_RuntimeError, NotImplementedError,
  *    NameError extends Exception
  */
 
-static inline PyNameErrorObject *
+static inline TyNameErrorObject *
 PyNameErrorObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_NameError));
-    return (PyNameErrorObject *)self;
+    return (TyNameErrorObject *)self;
 }
 
 static int
@@ -2455,7 +2455,7 @@ NameError_init(TyObject *op, TyObject *args, TyObject *kwds)
     }
     Ty_DECREF(empty_tuple);
 
-    PyNameErrorObject *self = PyNameErrorObject_CAST(op);
+    TyNameErrorObject *self = PyNameErrorObject_CAST(op);
     Ty_XSETREF(self->name, Ty_XNewRef(name));
 
     return 0;
@@ -2464,7 +2464,7 @@ NameError_init(TyObject *op, TyObject *args, TyObject *kwds)
 static int
 NameError_clear(TyObject *op)
 {
-    PyNameErrorObject *self = PyNameErrorObject_CAST(op);
+    TyNameErrorObject *self = PyNameErrorObject_CAST(op);
     Ty_CLEAR(self->name);
     return BaseException_clear(op);
 }
@@ -2480,13 +2480,13 @@ NameError_dealloc(TyObject *self)
 static int
 NameError_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PyNameErrorObject *self = PyNameErrorObject_CAST(op);
+    TyNameErrorObject *self = PyNameErrorObject_CAST(op);
     Ty_VISIT(self->name);
     return BaseException_traverse(op, visit, arg);
 }
 
 static TyMemberDef NameError_members[] = {
-        {"name", _Ty_T_OBJECT, offsetof(PyNameErrorObject, name), 0, TyDoc_STR("name")},
+        {"name", _Ty_T_OBJECT, offsetof(TyNameErrorObject, name), 0, TyDoc_STR("name")},
         {NULL}  /* Sentinel */
 };
 
@@ -2510,11 +2510,11 @@ MiddlingExtendsException(TyExc_NameError, UnboundLocalError, NameError,
  *    AttributeError extends Exception
  */
 
-static inline PyAttributeErrorObject *
+static inline TyAttributeErrorObject *
 PyAttributeErrorObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_AttributeError));
-    return (PyAttributeErrorObject *)self;
+    return (TyAttributeErrorObject *)self;
 }
 
 static int
@@ -2539,7 +2539,7 @@ AttributeError_init(TyObject *op, TyObject *args, TyObject *kwds)
     }
     Ty_DECREF(empty_tuple);
 
-    PyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
+    TyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
     Ty_XSETREF(self->name, Ty_XNewRef(name));
     Ty_XSETREF(self->obj, Ty_XNewRef(obj));
 
@@ -2549,7 +2549,7 @@ AttributeError_init(TyObject *op, TyObject *args, TyObject *kwds)
 static int
 AttributeError_clear(TyObject *op)
 {
-    PyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
+    TyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
     Ty_CLEAR(self->obj);
     Ty_CLEAR(self->name);
     return BaseException_clear(op);
@@ -2566,7 +2566,7 @@ AttributeError_dealloc(TyObject *self)
 static int
 AttributeError_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
+    TyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
     Ty_VISIT(self->obj);
     Ty_VISIT(self->name);
     return BaseException_traverse(op, visit, arg);
@@ -2576,7 +2576,7 @@ AttributeError_traverse(TyObject *op, visitproc visit, void *arg)
 static TyObject *
 AttributeError_getstate(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
-    PyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
+    TyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
     TyObject *dict = self->dict;
     if (self->name || self->args) {
         dict = dict ? TyDict_Copy(dict) : TyDict_New();
@@ -2610,15 +2610,15 @@ AttributeError_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
         return NULL;
     }
 
-    PyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
+    TyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
     TyObject *return_value = TyTuple_Pack(3, Ty_TYPE(self), self->args, state);
     Ty_DECREF(state);
     return return_value;
 }
 
 static TyMemberDef AttributeError_members[] = {
-    {"name", _Ty_T_OBJECT, offsetof(PyAttributeErrorObject, name), 0, TyDoc_STR("attribute name")},
-    {"obj", _Ty_T_OBJECT, offsetof(PyAttributeErrorObject, obj), 0, TyDoc_STR("object")},
+    {"name", _Ty_T_OBJECT, offsetof(TyAttributeErrorObject, name), 0, TyDoc_STR("attribute name")},
+    {"obj", _Ty_T_OBJECT, offsetof(TyAttributeErrorObject, obj), 0, TyDoc_STR("object")},
     {NULL}  /* Sentinel */
 };
 
@@ -2637,11 +2637,11 @@ ComplexExtendsException(TyExc_Exception, AttributeError,
  *    SyntaxError extends Exception
  */
 
-static inline PySyntaxErrorObject *
+static inline TySyntaxErrorObject *
 PySyntaxErrorObject_CAST(TyObject *self)
 {
     assert(PyObject_TypeCheck(self, (TyTypeObject *)TyExc_SyntaxError));
-    return (PySyntaxErrorObject *)self;
+    return (TySyntaxErrorObject *)self;
 }
 
 static int
@@ -2653,7 +2653,7 @@ SyntaxError_init(TyObject *op, TyObject *args, TyObject *kwds)
     if (BaseException_init(op, args, kwds) == -1)
         return -1;
 
-    PySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
+    TySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
     if (lenargs >= 1) {
         Ty_XSETREF(self->msg, Ty_NewRef(TyTuple_GET_ITEM(args, 0)));
     }
@@ -2694,7 +2694,7 @@ SyntaxError_init(TyObject *op, TyObject *args, TyObject *kwds)
 static int
 SyntaxError_clear(TyObject *op)
 {
-    PySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
+    TySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
     Ty_CLEAR(self->msg);
     Ty_CLEAR(self->filename);
     Ty_CLEAR(self->lineno);
@@ -2718,7 +2718,7 @@ SyntaxError_dealloc(TyObject *self)
 static int
 SyntaxError_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    PySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
+    TySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
     Ty_VISIT(self->msg);
     Ty_VISIT(self->filename);
     Ty_VISIT(self->lineno);
@@ -2762,7 +2762,7 @@ my_basename(TyObject *name)
 static TyObject *
 SyntaxError_str(TyObject *op)
 {
-    PySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
+    TySyntaxErrorObject *self = PySyntaxErrorObject_CAST(op);
     int have_lineno = 0;
     TyObject *filename;
     TyObject *result;
@@ -2806,24 +2806,24 @@ SyntaxError_str(TyObject *op)
 }
 
 static TyMemberDef SyntaxError_members[] = {
-    {"msg", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, msg), 0,
+    {"msg", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, msg), 0,
         TyDoc_STR("exception msg")},
-    {"filename", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, filename), 0,
+    {"filename", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, filename), 0,
         TyDoc_STR("exception filename")},
-    {"lineno", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, lineno), 0,
+    {"lineno", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, lineno), 0,
         TyDoc_STR("exception lineno")},
-    {"offset", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, offset), 0,
+    {"offset", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, offset), 0,
         TyDoc_STR("exception offset")},
-    {"text", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, text), 0,
+    {"text", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, text), 0,
         TyDoc_STR("exception text")},
-    {"end_lineno", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, end_lineno), 0,
+    {"end_lineno", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, end_lineno), 0,
                    TyDoc_STR("exception end lineno")},
-    {"end_offset", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, end_offset), 0,
+    {"end_offset", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, end_offset), 0,
                    TyDoc_STR("exception end offset")},
     {"print_file_and_line", _Ty_T_OBJECT,
-        offsetof(PySyntaxErrorObject, print_file_and_line), 0,
+        offsetof(TySyntaxErrorObject, print_file_and_line), 0,
         TyDoc_STR("exception print_file_and_line")},
-    {"_metadata", _Ty_T_OBJECT, offsetof(PySyntaxErrorObject, metadata), 0,
+    {"_metadata", _Ty_T_OBJECT, offsetof(TySyntaxErrorObject, metadata), 0,
                    TyDoc_STR("exception private metadata")},
     {NULL}  /* Sentinel */
 };
@@ -2956,7 +2956,7 @@ as_unicode_error_attribute(TyObject *attr, const char *name, int as_bytes)
 #define PyUnicodeError_Check(PTR)   \
     PyObject_TypeCheck((PTR), (TyTypeObject *)TyExc_UnicodeError)
 #define PyUnicodeError_CAST(PTR)    \
-    (assert(PyUnicodeError_Check(PTR)), ((PyUnicodeErrorObject *)(PTR)))
+    (assert(PyUnicodeError_Check(PTR)), ((TyUnicodeErrorObject *)(PTR)))
 
 
 /* class names to use when reporting errors */
@@ -2992,10 +2992,10 @@ check_unicode_error_type(TyObject *self, const char *expect_type)
 }
 
 
-// --- PyUnicodeEncodeObject: internal helpers --------------------------------
+// --- TyUnicodeEncodeObject: internal helpers --------------------------------
 //
 // In the helpers below, the caller is responsible to ensure that 'self'
-// is a PyUnicodeErrorObject, although this is verified on DEBUG builds
+// is a TyUnicodeErrorObject, although this is verified on DEBUG builds
 // through PyUnicodeError_CAST().
 
 /*
@@ -3005,7 +3005,7 @@ static inline TyObject *
 unicode_error_get_encoding_impl(TyObject *self)
 {
     assert(self != NULL);
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     return as_unicode_error_attribute(exc->encoding, "encoding", false);
 }
 
@@ -3018,7 +3018,7 @@ static inline TyObject *
 unicode_error_get_object_impl(TyObject *self, int as_bytes)
 {
     assert(self != NULL);
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     return as_unicode_error_attribute(exc->object, "object", as_bytes);
 }
 
@@ -3030,7 +3030,7 @@ static inline TyObject *
 unicode_error_get_reason_impl(TyObject *self)
 {
     assert(self != NULL);
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     return as_unicode_error_attribute(exc->reason, "reason", false);
 }
 
@@ -3048,7 +3048,7 @@ unicode_error_set_reason_impl(TyObject *self, const char *reason)
     if (value == NULL) {
         return -1;
     }
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     Ty_XSETREF(exc->reason, value);
     return 0;
 }
@@ -3063,7 +3063,7 @@ static inline int
 unicode_error_set_start_impl(TyObject *self, Ty_ssize_t start)
 {
     assert(self != NULL);
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     exc->start = start;
     return 0;
 }
@@ -3078,12 +3078,12 @@ static inline int
 unicode_error_set_end_impl(TyObject *self, Ty_ssize_t end)
 {
     assert(self != NULL);
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     exc->end = end;
     return 0;
 }
 
-// --- PyUnicodeEncodeObject: internal getters --------------------------------
+// --- TyUnicodeEncodeObject: internal getters --------------------------------
 
 /*
  * Adjust the (inclusive) 'start' value of a UnicodeError object.
@@ -3151,7 +3151,7 @@ unicode_error_adjust_end(Ty_ssize_t end, Ty_ssize_t objlen)
 #define PyUnicodeError_Check(PTR)   \
     PyObject_TypeCheck((PTR), (TyTypeObject *)TyExc_UnicodeError)
 #define PyUnicodeErrorObject_CAST(op)   \
-    (assert(PyUnicodeError_Check(op)), ((PyUnicodeErrorObject *)(op)))
+    (assert(PyUnicodeError_Check(op)), ((TyUnicodeErrorObject *)(op)))
 
 /* Assert some properties of the adjusted 'end' value. */
 #ifndef NDEBUG
@@ -3209,7 +3209,7 @@ assert_adjusted_unicode_error_len(Ty_ssize_t ranlen, Ty_ssize_t objlen)
 /*
  * Get various common parameters of a UnicodeError object.
  *
- * The caller is responsible to ensure that 'self' is a PyUnicodeErrorObject,
+ * The caller is responsible to ensure that 'self' is a TyUnicodeErrorObject,
  * although this condition is verified by this function on DEBUG builds.
  *
  * Return 0 on success and -1 on failure.
@@ -3242,7 +3242,7 @@ _PyUnicodeError_GetParams(TyObject *self,
 {
     assert(self != NULL);
     assert(as_bytes == 0 || as_bytes == 1);
-    PyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeError_CAST(self);
     TyObject *r = as_unicode_error_attribute(exc->object, "object", as_bytes);
     if (r == NULL) {
         return -1;
@@ -3286,7 +3286,7 @@ _PyUnicodeError_GetParams(TyObject *self,
 }
 
 
-// --- PyUnicodeEncodeObject: 'encoding' getters ------------------------------
+// --- TyUnicodeEncodeObject: 'encoding' getters ------------------------------
 // Note: PyUnicodeTranslateError does not have an 'encoding' attribute.
 
 TyObject *
@@ -3305,7 +3305,7 @@ PyUnicodeDecodeError_GetEncoding(TyObject *self)
 }
 
 
-// --- PyUnicodeEncodeObject: 'object' getters --------------------------------
+// --- TyUnicodeEncodeObject: 'object' getters --------------------------------
 
 TyObject *
 PyUnicodeEncodeError_GetObject(TyObject *self)
@@ -3331,12 +3331,12 @@ PyUnicodeTranslateError_GetObject(TyObject *self)
 }
 
 
-// --- PyUnicodeEncodeObject: 'start' getters ---------------------------------
+// --- TyUnicodeEncodeObject: 'start' getters ---------------------------------
 
 /*
  * Specialization of _PyUnicodeError_GetParams() for the 'start' attribute.
  *
- * The caller is responsible to ensure that 'self' is a PyUnicodeErrorObject,
+ * The caller is responsible to ensure that 'self' is a TyUnicodeErrorObject,
  * although this condition is verified by this function on DEBUG builds.
  */
 static inline int
@@ -3373,7 +3373,7 @@ PyUnicodeTranslateError_GetStart(TyObject *self, Ty_ssize_t *start)
 }
 
 
-// --- PyUnicodeEncodeObject: 'start' setters ---------------------------------
+// --- TyUnicodeEncodeObject: 'start' setters ---------------------------------
 
 int
 PyUnicodeEncodeError_SetStart(TyObject *self, Ty_ssize_t start)
@@ -3399,12 +3399,12 @@ PyUnicodeTranslateError_SetStart(TyObject *self, Ty_ssize_t start)
 }
 
 
-// --- PyUnicodeEncodeObject: 'end' getters -----------------------------------
+// --- TyUnicodeEncodeObject: 'end' getters -----------------------------------
 
 /*
  * Specialization of _PyUnicodeError_GetParams() for the 'end' attribute.
  *
- * The caller is responsible to ensure that 'self' is a PyUnicodeErrorObject,
+ * The caller is responsible to ensure that 'self' is a TyUnicodeErrorObject,
  * although this condition is verified by this function on DEBUG builds.
  */
 static inline int
@@ -3441,7 +3441,7 @@ PyUnicodeTranslateError_GetEnd(TyObject *self, Ty_ssize_t *end)
 }
 
 
-// --- PyUnicodeEncodeObject: 'end' setters -----------------------------------
+// --- TyUnicodeEncodeObject: 'end' setters -----------------------------------
 
 int
 PyUnicodeEncodeError_SetEnd(TyObject *self, Ty_ssize_t end)
@@ -3467,7 +3467,7 @@ PyUnicodeTranslateError_SetEnd(TyObject *self, Ty_ssize_t end)
 }
 
 
-// --- PyUnicodeEncodeObject: 'reason' getters --------------------------------
+// --- TyUnicodeEncodeObject: 'reason' getters --------------------------------
 
 TyObject *
 PyUnicodeEncodeError_GetReason(TyObject *self)
@@ -3493,7 +3493,7 @@ PyUnicodeTranslateError_GetReason(TyObject *self)
 }
 
 
-// --- PyUnicodeEncodeObject: 'reason' setters --------------------------------
+// --- TyUnicodeEncodeObject: 'reason' setters --------------------------------
 
 int
 PyUnicodeEncodeError_SetReason(TyObject *self, const char *reason)
@@ -3522,7 +3522,7 @@ PyUnicodeTranslateError_SetReason(TyObject *self, const char *reason)
 static int
 UnicodeError_clear(TyObject *self)
 {
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     Ty_CLEAR(exc->encoding);
     Ty_CLEAR(exc->object);
     Ty_CLEAR(exc->reason);
@@ -3541,7 +3541,7 @@ UnicodeError_dealloc(TyObject *self)
 static int
 UnicodeError_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     Ty_VISIT(exc->encoding);
     Ty_VISIT(exc->object);
     Ty_VISIT(exc->reason);
@@ -3549,15 +3549,15 @@ UnicodeError_traverse(TyObject *self, visitproc visit, void *arg)
 }
 
 static TyMemberDef UnicodeError_members[] = {
-    {"encoding", _Ty_T_OBJECT, offsetof(PyUnicodeErrorObject, encoding), 0,
+    {"encoding", _Ty_T_OBJECT, offsetof(TyUnicodeErrorObject, encoding), 0,
         TyDoc_STR("exception encoding")},
-    {"object", _Ty_T_OBJECT, offsetof(PyUnicodeErrorObject, object), 0,
+    {"object", _Ty_T_OBJECT, offsetof(TyUnicodeErrorObject, object), 0,
         TyDoc_STR("exception object")},
-    {"start", Ty_T_PYSSIZET, offsetof(PyUnicodeErrorObject, start), 0,
+    {"start", Ty_T_PYSSIZET, offsetof(TyUnicodeErrorObject, start), 0,
         TyDoc_STR("exception start")},
-    {"end", Ty_T_PYSSIZET, offsetof(PyUnicodeErrorObject, end), 0,
+    {"end", Ty_T_PYSSIZET, offsetof(TyUnicodeErrorObject, end), 0,
         TyDoc_STR("exception end")},
-    {"reason", _Ty_T_OBJECT, offsetof(PyUnicodeErrorObject, reason), 0,
+    {"reason", _Ty_T_OBJECT, offsetof(TyUnicodeErrorObject, reason), 0,
         TyDoc_STR("exception reason")},
     {NULL}  /* Sentinel */
 };
@@ -3583,7 +3583,7 @@ UnicodeEncodeError_init(TyObject *self, TyObject *args, TyObject *kwds)
         return -1;
     }
 
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     Ty_XSETREF(exc->encoding, Ty_NewRef(encoding));
     Ty_XSETREF(exc->object, Ty_NewRef(object));
     exc->start = start;
@@ -3595,7 +3595,7 @@ UnicodeEncodeError_init(TyObject *self, TyObject *args, TyObject *kwds)
 static TyObject *
 UnicodeEncodeError_str(TyObject *self)
 {
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     TyObject *result = NULL;
     TyObject *reason_str = NULL;
     TyObject *encoding_str = NULL;
@@ -3658,13 +3658,13 @@ done:
 static TyTypeObject _TyExc_UnicodeEncodeError = {
     TyVarObject_HEAD_INIT(NULL, 0)
     "UnicodeEncodeError",
-    sizeof(PyUnicodeErrorObject), 0,
+    sizeof(TyUnicodeErrorObject), 0,
     UnicodeError_dealloc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     UnicodeEncodeError_str, 0, 0, 0,
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Unicode encoding error."), UnicodeError_traverse,
     UnicodeError_clear, 0, 0, 0, 0, 0, UnicodeError_members,
-    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
+    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(TyUnicodeErrorObject, dict),
     UnicodeEncodeError_init, 0, BaseException_new,
 };
 TyObject *TyExc_UnicodeEncodeError = (TyObject *)&_TyExc_UnicodeEncodeError;
@@ -3706,7 +3706,7 @@ UnicodeDecodeError_init(TyObject *self, TyObject *args, TyObject *kwds)
         }
     }
 
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     Ty_XSETREF(exc->encoding, Ty_NewRef(encoding));
     Ty_XSETREF(exc->object, object /* already a strong reference */);
     exc->start = start;
@@ -3718,7 +3718,7 @@ UnicodeDecodeError_init(TyObject *self, TyObject *args, TyObject *kwds)
 static TyObject *
 UnicodeDecodeError_str(TyObject *self)
 {
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     TyObject *result = NULL;
     TyObject *reason_str = NULL;
     TyObject *encoding_str = NULL;
@@ -3771,13 +3771,13 @@ done:
 static TyTypeObject _TyExc_UnicodeDecodeError = {
     TyVarObject_HEAD_INIT(NULL, 0)
     "UnicodeDecodeError",
-    sizeof(PyUnicodeErrorObject), 0,
+    sizeof(TyUnicodeErrorObject), 0,
     UnicodeError_dealloc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     UnicodeDecodeError_str, 0, 0, 0,
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Unicode decoding error."), UnicodeError_traverse,
     UnicodeError_clear, 0, 0, 0, 0, 0, UnicodeError_members,
-    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
+    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(TyUnicodeErrorObject, dict),
     UnicodeDecodeError_init, 0, BaseException_new,
 };
 TyObject *TyExc_UnicodeDecodeError = (TyObject *)&_TyExc_UnicodeDecodeError;
@@ -3810,7 +3810,7 @@ UnicodeTranslateError_init(TyObject *self, TyObject *args, TyObject *kwds)
         return -1;
     }
 
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     Ty_XSETREF(exc->object, Ty_NewRef(object));
     exc->start = start;
     exc->end = end;
@@ -3822,7 +3822,7 @@ UnicodeTranslateError_init(TyObject *self, TyObject *args, TyObject *kwds)
 static TyObject *
 UnicodeTranslateError_str(TyObject *self)
 {
-    PyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
+    TyUnicodeErrorObject *exc = PyUnicodeErrorObject_CAST(self);
     TyObject *result = NULL;
     TyObject *reason_str = NULL;
 
@@ -3877,13 +3877,13 @@ done:
 static TyTypeObject _TyExc_UnicodeTranslateError = {
     TyVarObject_HEAD_INIT(NULL, 0)
     "UnicodeTranslateError",
-    sizeof(PyUnicodeErrorObject), 0,
+    sizeof(TyUnicodeErrorObject), 0,
     UnicodeError_dealloc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     UnicodeTranslateError_str, 0, 0, 0,
     Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     TyDoc_STR("Unicode translation error."), UnicodeError_traverse,
     UnicodeError_clear, 0, 0, 0, 0, 0, UnicodeError_members,
-    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(PyUnicodeErrorObject, dict),
+    0, &_TyExc_UnicodeError, 0, 0, 0, offsetof(TyUnicodeErrorObject, dict),
     UnicodeTranslateError_init, 0, BaseException_new,
 };
 TyObject *TyExc_UnicodeTranslateError = (TyObject *)&_TyExc_UnicodeTranslateError;

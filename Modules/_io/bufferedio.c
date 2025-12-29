@@ -765,7 +765,7 @@ _buffered_check_blocking_error(void)
         TyErr_SetRaisedException(exc);
         return NULL;
     }
-    PyOSErrorObject *err = (PyOSErrorObject *)exc;
+    TyOSErrorObject *err = (TyOSErrorObject *)exc;
     /* TODO: sanity check (err->written >= 0) */
     TyErr_SetRaisedException(exc);
     return &err->written;
@@ -873,7 +873,7 @@ _PyIO_trap_eintr(void)
         return 0;
     }
     TyObject *exc = TyErr_GetRaisedException();
-    PyOSErrorObject *env_err = (PyOSErrorObject *)exc;
+    TyOSErrorObject *env_err = (TyOSErrorObject *)exc;
     assert(env_err != NULL);
     if (env_err->myerrno != NULL) {
         assert(EINTR > 0 && EINTR < INT_MAX);

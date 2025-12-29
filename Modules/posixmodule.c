@@ -5196,7 +5196,7 @@ os__getvolumepathname_impl(TyObject *module, path_t *path)
 
     Ty_BEGIN_ALLOW_THREADS
     ret = GetVolumePathNameW(path->wide, mountpath,
-                             Py_SAFE_DOWNCAST(buflen, size_t, DWORD));
+                             Ty_SAFE_DOWNCAST(buflen, size_t, DWORD));
     Ty_END_ALLOW_THREADS
 
     if (!ret) {
@@ -8306,7 +8306,7 @@ convert_sched_param(TyObject *module, TyObject *param, struct sched_param *res)
         TyErr_SetString(TyExc_OverflowError, "sched_priority out of range");
         return 0;
     }
-    res->sched_priority = Py_SAFE_DOWNCAST(priority, long, int);
+    res->sched_priority = Ty_SAFE_DOWNCAST(priority, long, int);
     return 1;
 }
 #endif /* defined(HAVE_SCHED_SETPARAM) || defined(HAVE_SCHED_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDPARAM) */

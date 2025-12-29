@@ -18,7 +18,7 @@ typedef struct {
     PyException_HEAD
     TyObject *msg;
     TyObject *excs;
-} PyBaseExceptionGroupObject;
+} TyBaseExceptionGroupObject;
 
 typedef struct {
     PyException_HEAD
@@ -31,7 +31,7 @@ typedef struct {
     TyObject *text;
     TyObject *print_file_and_line;
     TyObject *metadata;
-} PySyntaxErrorObject;
+} TySyntaxErrorObject;
 
 typedef struct {
     PyException_HEAD
@@ -39,7 +39,7 @@ typedef struct {
     TyObject *name;
     TyObject *path;
     TyObject *name_from;
-} PyImportErrorObject;
+} TyImportErrorObject;
 
 typedef struct {
     PyException_HEAD
@@ -48,12 +48,12 @@ typedef struct {
     Ty_ssize_t start;
     Ty_ssize_t end;
     TyObject *reason;
-} PyUnicodeErrorObject;
+} TyUnicodeErrorObject;
 
 typedef struct {
     PyException_HEAD
     TyObject *code;
-} PySystemExitObject;
+} TySystemExitObject;
 
 typedef struct {
     PyException_HEAD
@@ -65,28 +65,28 @@ typedef struct {
     TyObject *winerror;
 #endif
     Ty_ssize_t written;   /* only for BlockingIOError, -1 otherwise */
-} PyOSErrorObject;
+} TyOSErrorObject;
 
 typedef struct {
     PyException_HEAD
     TyObject *value;
-} PyStopIterationObject;
+} TyStopIterationObject;
 
 typedef struct {
     PyException_HEAD
     TyObject *name;
-} PyNameErrorObject;
+} TyNameErrorObject;
 
 typedef struct {
     PyException_HEAD
     TyObject *obj;
     TyObject *name;
-} PyAttributeErrorObject;
+} TyAttributeErrorObject;
 
 /* Compatibility typedefs */
-typedef PyOSErrorObject PyEnvironmentErrorObject;
+typedef TyOSErrorObject PyEnvironmentErrorObject;
 #ifdef MS_WINDOWS
-typedef PyOSErrorObject PyWindowsErrorObject;
+typedef TyOSErrorObject PyWindowsErrorObject;
 #endif
 
 /* Context manipulation (PEP 3134) */

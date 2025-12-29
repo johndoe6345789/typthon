@@ -680,7 +680,7 @@ _TyGen_FetchStopIterationValue(TyObject **pvalue)
     TyObject *value = NULL;
     if (TyErr_ExceptionMatches(TyExc_StopIteration)) {
         TyObject *exc = TyErr_GetRaisedException();
-        value = Ty_NewRef(((PyStopIterationObject *)exc)->value);
+        value = Ty_NewRef(((TyStopIterationObject *)exc)->value);
         Ty_DECREF(exc);
     } else if (TyErr_Occurred()) {
         return -1;

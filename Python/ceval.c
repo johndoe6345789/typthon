@@ -3328,7 +3328,7 @@ _TyEval_FormatExcCheckArg(TyThreadState *tstate, TyObject *exc,
         // Include the name in the NameError exceptions to offer suggestions later.
         TyObject *exc = TyErr_GetRaisedException();
         if (TyErr_GivenExceptionMatches(exc, TyExc_NameError)) {
-            if (((PyNameErrorObject*)exc)->name == NULL) {
+            if (((TyNameErrorObject*)exc)->name == NULL) {
                 // We do not care if this fails because we are going to restore the
                 // NameError anyway.
                 (void)PyObject_SetAttr(exc, &_Ty_ID(name), obj);
