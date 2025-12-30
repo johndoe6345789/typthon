@@ -290,9 +290,9 @@ atexit_unregister(TyObject *module, TyObject *func)
 {
     struct atexit_state *state = get_atexit_state();
     int result;
-    Py_BEGIN_CRITICAL_SECTION(state->callbacks);
+    Ty_BEGIN_CRITICAL_SECTION(state->callbacks);
     result = atexit_unregister_locked(state->callbacks, func);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
     return result < 0 ? NULL : Ty_None;
 }
 

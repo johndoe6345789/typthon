@@ -824,7 +824,7 @@ specialize_module_load_attr(
 /* Attribute specialization */
 
 Ty_NO_INLINE void
-_Py_Specialize_LoadSuperAttr(_PyStackRef global_super_st, _PyStackRef cls_st, _Ty_CODEUNIT *instr, int load_method) {
+_Ty_Specialize_LoadSuperAttr(_PyStackRef global_super_st, _PyStackRef cls_st, _Ty_CODEUNIT *instr, int load_method) {
     TyObject *global_super = PyStackRef_AsPyObjectBorrow(global_super_st);
     TyObject *cls = PyStackRef_AsPyObjectBorrow(cls_st);
 
@@ -1348,7 +1348,7 @@ specialize_instance_load_attr(TyObject* owner, _Ty_CODEUNIT* instr, TyObject* na
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_LoadAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *name)
+_Ty_Specialize_LoadAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *name)
 {
     TyObject *owner = PyStackRef_AsPyObjectBorrow(owner_st);
 
@@ -1379,7 +1379,7 @@ _Py_Specialize_LoadAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *nam
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_StoreAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *name)
+_Ty_Specialize_StoreAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *name)
 {
     TyObject *owner = PyStackRef_AsPyObjectBorrow(owner_st);
 
@@ -1778,7 +1778,7 @@ fail:
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_LoadGlobal(
+_Ty_Specialize_LoadGlobal(
     TyObject *globals, TyObject *builtins,
     _Ty_CODEUNIT *instr, TyObject *name)
 {
@@ -1898,7 +1898,7 @@ store_subscr_fail_kind(TyObject *container, TyObject *sub)
 #endif
 
 Ty_NO_INLINE void
-_Py_Specialize_StoreSubscr(_PyStackRef container_st, _PyStackRef sub_st, _Ty_CODEUNIT *instr)
+_Ty_Specialize_StoreSubscr(_PyStackRef container_st, _PyStackRef sub_st, _Ty_CODEUNIT *instr)
 {
     TyObject *container = PyStackRef_AsPyObjectBorrow(container_st);
     TyObject *sub = PyStackRef_AsPyObjectBorrow(sub_st);
@@ -2178,13 +2178,13 @@ specialize_c_call(TyObject *callable, _Ty_CODEUNIT *instr, int nargs)
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_Call(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
+_Ty_Specialize_Call(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 {
     TyObject *callable = PyStackRef_AsPyObjectBorrow(callable_st);
 
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_TyOpcode_Caches[CALL] == INLINE_CACHE_ENTRIES_CALL);
-    assert(_Py_OPCODE(*instr) != INSTRUMENTED_CALL);
+    assert(_Ty_OPCODE(*instr) != INSTRUMENTED_CALL);
     int fail;
     if (PyCFunction_CheckExact(callable)) {
         fail = specialize_c_call(callable, instr, nargs);
@@ -2218,13 +2218,13 @@ _Py_Specialize_Call(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_CallKw(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
+_Ty_Specialize_CallKw(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 {
     TyObject *callable = PyStackRef_AsPyObjectBorrow(callable_st);
 
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_TyOpcode_Caches[CALL_KW] == INLINE_CACHE_ENTRIES_CALL_KW);
-    assert(_Py_OPCODE(*instr) != INSTRUMENTED_CALL_KW);
+    assert(_Ty_OPCODE(*instr) != INSTRUMENTED_CALL_KW);
     int fail;
     if (TyFunction_Check(callable)) {
         fail = specialize_py_call_kw((PyFunctionObject *)callable, instr, nargs, false);
@@ -2573,7 +2573,7 @@ binary_op_extended_specialization(TyObject *lhs, TyObject *rhs, int oparg,
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_BinaryOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Ty_CODEUNIT *instr,
+_Ty_Specialize_BinaryOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Ty_CODEUNIT *instr,
                         int oparg, _PyStackRef *locals)
 {
     TyObject *lhs = PyStackRef_AsPyObjectBorrow(lhs_st);
@@ -2735,7 +2735,7 @@ compare_op_fail_kind(TyObject *lhs, TyObject *rhs)
 #endif   // Ty_STATS
 
 Ty_NO_INLINE void
-_Py_Specialize_CompareOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Ty_CODEUNIT *instr,
+_Ty_Specialize_CompareOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Ty_CODEUNIT *instr,
                          int oparg)
 {
     TyObject *lhs = PyStackRef_AsPyObjectBorrow(lhs_st);
@@ -2798,7 +2798,7 @@ unpack_sequence_fail_kind(TyObject *seq)
 #endif   // Ty_STATS
 
 Ty_NO_INLINE void
-_Py_Specialize_UnpackSequence(_PyStackRef seq_st, _Ty_CODEUNIT *instr, int oparg)
+_Ty_Specialize_UnpackSequence(_PyStackRef seq_st, _Ty_CODEUNIT *instr, int oparg)
 {
     TyObject *seq = PyStackRef_AsPyObjectBorrow(seq_st);
 
@@ -2905,7 +2905,7 @@ int
 #endif   // Ty_STATS
 
 Ty_NO_INLINE void
-_Py_Specialize_ForIter(_PyStackRef iter, _Ty_CODEUNIT *instr, int oparg)
+_Ty_Specialize_ForIter(_PyStackRef iter, _Ty_CODEUNIT *instr, int oparg)
 {
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_TyOpcode_Caches[FOR_ITER] == INLINE_CACHE_ENTRIES_FOR_ITER);
@@ -2960,7 +2960,7 @@ failure:
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_Send(_PyStackRef receiver_st, _Ty_CODEUNIT *instr)
+_Ty_Specialize_Send(_PyStackRef receiver_st, _Ty_CODEUNIT *instr)
 {
     TyObject *receiver = PyStackRef_AsPyObjectBorrow(receiver_st);
 
@@ -3030,7 +3030,7 @@ check_type_always_true(TyTypeObject *ty)
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_ToBool(_PyStackRef value_o, _Ty_CODEUNIT *instr)
+_Ty_Specialize_ToBool(_PyStackRef value_o, _Ty_CODEUNIT *instr)
 {
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_TyOpcode_Caches[TO_BOOL] == INLINE_CACHE_ENTRIES_TO_BOOL);
@@ -3104,7 +3104,7 @@ containsop_fail_kind(TyObject *value) {
 #endif
 
 Ty_NO_INLINE void
-_Py_Specialize_ContainsOp(_PyStackRef value_st, _Ty_CODEUNIT *instr)
+_Ty_Specialize_ContainsOp(_PyStackRef value_st, _Ty_CODEUNIT *instr)
 {
     TyObject *value = PyStackRef_AsPyObjectBorrow(value_st);
 
@@ -3200,11 +3200,11 @@ static const PyBytesObject no_location = {
 #ifdef Ty_GIL_DISABLED
 static _PyCodeArray init_cleanup_tlbc = {
     .size = 1,
-    .entries = {(char*) &_Py_InitCleanup.co_code_adaptive},
+    .entries = {(char*) &_Ty_InitCleanup.co_code_adaptive},
 };
 #endif
 
-const struct _PyCode8 _Py_InitCleanup = {
+const struct _PyCode8 _Ty_InitCleanup = {
     _PyVarObject_HEAD_INIT(&TyCode_Type, 3),
     .co_consts = (TyObject *)&_Ty_SINGLETON(tuple_empty),
     .co_names = (TyObject *)&_Ty_SINGLETON(tuple_empty),

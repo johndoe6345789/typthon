@@ -138,7 +138,7 @@ ensure_isolated_main(TyThreadState *tstate, struct sync_module *main)
 
     // Try the per-interpreter cache for the loaded module.
     // XXX Store it in sys.modules?
-    TyObject *interpns = PyInterpreterState_GetDict(tstate->interp);
+    TyObject *interpns = TyInterpreterState_GetDict(tstate->interp);
     assert(interpns != NULL);
     TyObject *key = TyUnicode_FromString("CACHED_MODULE_NS___main__");
     if (key == NULL) {
@@ -261,7 +261,7 @@ int
 _Ty_CallInInterpreter(TyInterpreterState *interp,
                       _Ty_simple_func func, void *arg)
 {
-    if (interp == PyInterpreterState_Get()) {
+    if (interp == TyInterpreterState_Get()) {
         return func(arg);
     }
     // XXX Emit a warning if this fails?
@@ -273,7 +273,7 @@ int
 _Ty_CallInInterpreterAndRawFree(TyInterpreterState *interp,
                                 _Ty_simple_func func, void *arg)
 {
-    if (interp == PyInterpreterState_Get()) {
+    if (interp == TyInterpreterState_Get()) {
         int res = func(arg);
         TyMem_RawFree(arg);
         return res;
@@ -306,7 +306,7 @@ static _PyXIData_getdata_t lookup_getdata(struct _dlcontext *, TyObject *);
 _PyXIData_t *
 _PyXIData_New(void)
 {
-    _PyXIData_t *xid = PyMem_RawCalloc(1, sizeof(_PyXIData_t));
+    _PyXIData_t *xid = TyMem_RawCalloc(1, sizeof(_PyXIData_t));
     if (xid == NULL) {
         TyErr_NoMemory();
     }
@@ -316,7 +316,7 @@ _PyXIData_New(void)
 void
 _PyXIData_Free(_PyXIData_t *xid)
 {
-    TyInterpreterState *interp = PyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     _PyXIData_Clear(interp, xid);
     TyMem_RawFree(xid);
 }
@@ -370,7 +370,7 @@ _PyXIData_Init(_PyXIData_t *xidata,
     // Until then, we have to rely on the caller to identify it
     // (but we don't need it in all cases).
     _PyXIData_INTERPID(xidata) = (interp != NULL)
-        ? PyInterpreterState_GetID(interp)
+        ? TyInterpreterState_GetID(interp)
         : -1;
     xidata->new_object = new_object;
 }
@@ -386,7 +386,7 @@ _PyXIData_InitWithSize(_PyXIData_t *xidata,
     // where it was allocated, so the interpreter is required.
     assert(interp != NULL);
     _PyXIData_Init(xidata, interp, NULL, obj, new_object);
-    xidata->data = PyMem_RawCalloc(1, size);
+    xidata->data = TyMem_RawCalloc(1, size);
     if (xidata->data == NULL) {
         return -1;
     }
@@ -401,7 +401,7 @@ _PyXIData_Clear(TyInterpreterState *interp, _PyXIData_t *xidata)
     // This must be called in the owning interpreter.
     assert(interp == NULL
            || _PyXIData_INTERPID(xidata) == -1
-           || _PyXIData_INTERPID(xidata) == PyInterpreterState_GetID(interp));
+           || _PyXIData_INTERPID(xidata) == TyInterpreterState_GetID(interp));
     _xidata_clear(xidata);
 }
 
@@ -511,7 +511,7 @@ _get_xidata(TyThreadState *tstate,
     }
 
     // Fill in the blanks and validate the result.
-    _PyXIData_INTERPID(xidata) = PyInterpreterState_GetID(interp);
+    _PyXIData_INTERPID(xidata) = TyInterpreterState_GetID(interp);
     if (_check_xidata(tstate, xidata) != 0) {
         (void)_PyXIData_Release(xidata);
         return -1;
@@ -802,7 +802,7 @@ _TyMarshal_ReadObjectFromXIData(_PyXIData_t *xidata)
 {
     TyThreadState *tstate = _TyThreadState_GET();
     _TyBytes_data_t *shared = (_TyBytes_data_t *)xidata->data;
-    TyObject *obj = PyMarshal_ReadObjectFromString(shared->bytes, shared->len);
+    TyObject *obj = TyMarshal_ReadObjectFromString(shared->bytes, shared->len);
     if (obj == NULL) {
         TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
@@ -817,7 +817,7 @@ _TyMarshal_ReadObjectFromXIData(_PyXIData_t *xidata)
 int
 _TyMarshal_GetXIData(TyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
-    TyObject *bytes = PyMarshal_WriteObjectToString(obj, Ty_MARSHAL_VERSION);
+    TyObject *bytes = TyMarshal_WriteObjectToString(obj, Ty_MARSHAL_VERSION);
     if (bytes == NULL) {
         TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
@@ -1052,7 +1052,7 @@ _copy_string_obj_raw(TyObject *strobj, Ty_ssize_t *p_size)
         return NULL;
     }
 
-    char *copied = PyMem_RawMalloc(size+1);
+    char *copied = TyMem_RawMalloc(size+1);
     if (copied == NULL) {
         TyErr_NoMemory();
         return NULL;
@@ -1640,7 +1640,7 @@ _PyXI_NewExcInfo(TyObject *exc)
         TyErr_SetString(TyExc_ValueError, "missing exc");
         return NULL;
     }
-    _PyXI_excinfo *info = PyMem_RawCalloc(1, sizeof(_PyXI_excinfo));
+    _PyXI_excinfo *info = TyMem_RawCalloc(1, sizeof(_PyXI_excinfo));
     if (info == NULL) {
         return NULL;
     }
@@ -1766,7 +1766,7 @@ copy_xi_failure(_PyXI_failure *dest, _PyXI_failure *src)
 _PyXI_failure *
 _PyXI_NewFailure(void)
 {
-    _PyXI_failure *failure = PyMem_RawMalloc(sizeof(_PyXI_failure));
+    _PyXI_failure *failure = TyMem_RawMalloc(sizeof(_PyXI_failure));
     if (failure == NULL) {
         TyErr_NoMemory();
         return NULL;
@@ -1950,7 +1950,7 @@ xi_error_set_exc(TyThreadState *tstate, _PyXI_error *err, TyObject *exc)
 static TyObject *
 _PyXI_ApplyError(_PyXI_error *error, const char *failure)
 {
-    TyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
     if (failure != NULL) {
         xi_error_clear(error);
@@ -2072,7 +2072,7 @@ _sharednsitem_set_value(_PyXI_namespace_item *item, TyObject *value,
     if (item->xidata == NULL) {
         return -1;
     }
-    TyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     if (_TyObject_GetXIData(tstate, value, fallback, item->xidata) < 0) {
         TyMem_RawFree(item->xidata);
         item->xidata = NULL;
@@ -2259,7 +2259,7 @@ _sharedns_alloc(Ty_ssize_t maxitems)
     // Allocate the value, including items.
     size_t size = fixedsize + sizeof(_PyXI_namespace_item) * maxitems;
 
-    _PyXI_namespace *ns = PyMem_RawCalloc(size, 1);
+    _PyXI_namespace *ns = TyMem_RawCalloc(size, 1);
     if (ns == NULL) {
         TyErr_NoMemory();
         return NULL;
@@ -2282,7 +2282,7 @@ _sharedns_free(_PyXI_namespace *ns)
     if (ns->numvalues > 0) {
         // One or more items may have interpreter-specific data.
 #ifndef NDEBUG
-        int64_t interpid = PyInterpreterState_GetID(PyInterpreterState_Get());
+        int64_t interpid = TyInterpreterState_GetID(TyInterpreterState_Get());
         int64_t interpid_i;
 #endif
         for (; i < ns->numvalues; i++) {
@@ -2380,7 +2380,7 @@ _fill_sharedns(_PyXI_namespace *ns, TyObject *nsobj,
     assert(_sharedns_check_counts(ns));
     assert(ns->numnames == ns->maxitems);
     assert(ns->numvalues == 0);
-    TyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     for (Ty_ssize_t i=0; i < ns->maxitems; i++) {
         if (_sharednsitem_copy_from_ns(&ns->items[i], nsobj, fallback) < 0) {
             if (p_err != NULL) {
@@ -2423,7 +2423,7 @@ _destroy_sharedns(_PyXI_namespace *ns)
         return;
     }
     TyInterpreterState *interp = _TyInterpreterState_LookUpID(interpid0);
-    if (interp == PyInterpreterState_Get()) {
+    if (interp == TyInterpreterState_Get()) {
         _sharedns_free(ns);
         return;
     }
@@ -2488,7 +2488,7 @@ struct xi_session {
 _PyXI_session *
 _PyXI_NewSession(void)
 {
-    _PyXI_session *session = PyMem_RawCalloc(1, sizeof(_PyXI_session));
+    _PyXI_session *session = TyMem_RawCalloc(1, sizeof(_PyXI_session));
     if (session == NULL) {
         TyErr_NoMemory();
         return NULL;
@@ -2526,13 +2526,13 @@ _enter_session(_PyXI_session *session, TyInterpreterState *interp)
     assert(session->main_ns == NULL);
 
     // Switch to interpreter.
-    TyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     TyThreadState *prev = tstate;
     int same_interp = (interp == tstate->interp);
     if (!same_interp) {
         tstate = _TyThreadState_NewBound(interp, _TyThreadState_WHENCE_EXEC);
         // XXX Possible GILState issues?
-        TyThreadState *swapped = PyThreadState_Swap(tstate);
+        TyThreadState *swapped = TyThreadState_Swap(tstate);
         assert(swapped == prev);
         (void)swapped;
     }
@@ -2551,7 +2551,7 @@ _exit_session(_PyXI_session *session)
 {
     TyThreadState *tstate = session->init_tstate;
     assert(tstate != NULL);
-    assert(PyThreadState_Get() == tstate);
+    assert(TyThreadState_Get() == tstate);
     assert(!_TyErr_Occurred(tstate));
 
     // Release any of the entered interpreters resources.
@@ -2570,9 +2570,9 @@ _exit_session(_PyXI_session *session)
     if (session->prev_tstate != session->init_tstate) {
         assert(session->own_init_tstate);
         session->own_init_tstate = 0;
-        PyThreadState_Clear(tstate);
-        PyThreadState_Swap(session->prev_tstate);
-        PyThreadState_Delete(tstate);
+        TyThreadState_Clear(tstate);
+        TyThreadState_Swap(session->prev_tstate);
+        TyThreadState_Delete(tstate);
     }
     else {
         assert(!session->own_init_tstate);
@@ -3197,7 +3197,7 @@ TyInterpreterState *
 _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
                      TyThreadState **p_tstate, TyThreadState **p_save_tstate)
 {
-    TyThreadState *save_tstate = PyThreadState_Swap(NULL);
+    TyThreadState *save_tstate = TyThreadState_Swap(NULL);
     assert(save_tstate != NULL);
 
     TyThreadState *tstate;
@@ -3206,7 +3206,7 @@ _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
         // Since no new thread state was created, there is no exception
         // to propagate; raise a fresh one after swapping back in the
         // old thread state.
-        PyThreadState_Swap(save_tstate);
+        TyThreadState_Swap(save_tstate);
         _TyErr_SetFromPyStatus(status);
         TyObject *exc = TyErr_GetRaisedException();
         TyErr_SetString(TyExc_InterpreterError,
@@ -3215,7 +3215,7 @@ _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
         return NULL;
     }
     assert(tstate != NULL);
-    TyInterpreterState *interp = PyThreadState_GetInterpreter(tstate);
+    TyInterpreterState *interp = TyThreadState_GetInterpreter(tstate);
 
     long whence = _TyInterpreterState_WHENCE_XI;
     if (maybe_whence != NULL) {
@@ -3229,9 +3229,9 @@ _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
     }
     else {
         // Throw away the initial tstate.
-        PyThreadState_Clear(tstate);
-        PyThreadState_Swap(save_tstate);
-        PyThreadState_Delete(tstate);
+        TyThreadState_Clear(tstate);
+        TyThreadState_Swap(save_tstate);
+        TyThreadState_Delete(tstate);
         save_tstate = NULL;
     }
     if (p_save_tstate != NULL) {
@@ -3255,28 +3255,28 @@ _PyXI_EndInterpreter(TyInterpreterState *interp,
         // which a not-ready does not have, so we don't clear it.
         // That means there may be leaks here until clearing the
         // interpreter is fixed.
-        PyInterpreterState_Delete(interp);
+        TyInterpreterState_Delete(interp);
         return;
     }
     assert(whence != _TyInterpreterState_WHENCE_UNKNOWN);
 
     TyThreadState *save_tstate = NULL;
-    TyThreadState *cur_tstate = PyThreadState_GET();
+    TyThreadState *cur_tstate = TyThreadState_GET();
     if (tstate == NULL) {
-        if (PyThreadState_GetInterpreter(cur_tstate) == interp) {
+        if (TyThreadState_GetInterpreter(cur_tstate) == interp) {
             tstate = cur_tstate;
         }
         else {
             tstate = _TyThreadState_NewBound(interp, _TyThreadState_WHENCE_FINI);
             assert(tstate != NULL);
-            save_tstate = PyThreadState_Swap(tstate);
+            save_tstate = TyThreadState_Swap(tstate);
         }
     }
     else {
-        assert(PyThreadState_GetInterpreter(tstate) == interp);
+        assert(TyThreadState_GetInterpreter(tstate) == interp);
         if (tstate != cur_tstate) {
-            assert(PyThreadState_GetInterpreter(cur_tstate) != interp);
-            save_tstate = PyThreadState_Swap(tstate);
+            assert(TyThreadState_GetInterpreter(cur_tstate) != interp);
+            save_tstate = TyThreadState_Swap(tstate);
         }
     }
 
@@ -3285,5 +3285,5 @@ _PyXI_EndInterpreter(TyInterpreterState *interp,
     if (p_save_tstate != NULL) {
         save_tstate = *p_save_tstate;
     }
-    PyThreadState_Swap(save_tstate);
+    TyThreadState_Swap(save_tstate);
 }
